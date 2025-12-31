@@ -21,14 +21,13 @@ export default function Contact() {
         setIsError(false);
 
         try {
-            const res = await fetch("https://api.web3forms.com/submit", {
+            const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
                 body: JSON.stringify({
-                    access_key: process.env.NEXT_PUBLIC_W3_FORMS_ACCESS_KEY,
                     name: (data as Record<string, unknown>).name as string,
                     email: (data as Record<string, unknown>).email as string,
                     message: (data as Record<string, unknown>).message as string,
