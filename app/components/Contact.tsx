@@ -44,7 +44,7 @@ export default function Contact() {
             } else {
                 setIsError(true);
             }
-        } catch (err) {
+        } catch (err: unknown) {
             setIsError(true);
         } finally {
             setIsSubmitting(false);
