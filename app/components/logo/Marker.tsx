@@ -4,7 +4,7 @@ const MarkerTitle = ({ firstTitle, secondTitle }: { firstTitle: string; secondTi
     return (
         <Link
             href="/"
-            className="group relative flex items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer"
+            className="group relative flex items-center gap-2 hover:scale-105 hover:cursor-cell transition-transform duration-300 cursor-pointer"
         >
             <span className="font-marker text-2xl md:text-4xl text-(--acid-green) drop-shadow-[2px_2px_0px_var(--void-black)] group-hover:text-(--electric-blue) transition-colors">
                 {firstTitle}

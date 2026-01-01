@@ -22,7 +22,7 @@ export default function Header() {
     const navItems = [
         {
             name: "Home",
-            href: "/",
+            href: "#home",
             className: "hover:text-acid-green -rotate-3 hover:rotate-3",
             mobileColor: "text-acid-green"
         },
@@ -75,7 +75,7 @@ export default function Header() {
                                 key={item.name}
                                 href={item.href}
                                 onClick={(e) => handleLinkClick(e, item.href)}
-                                className={`${item.className} transition-transform duration-200`}
+                                className={`${item.className} transition-transform duration-200 hover:cursor-cell`}
                             >
                                 {item.name}
                             </Link>

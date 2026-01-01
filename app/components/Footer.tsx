@@ -54,7 +54,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link 
                     href={link.href} 
-                    className="group flex items-center gap-2 text-dirty-white hover:text-acid-green transition-colors"
+                    className="group flex items-center gap-2 text-dirty-white hover:text-acid-green hover:cursor-cell transition-colors"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xs">
                       {">"}
@@ -91,7 +91,7 @@ export default function Footer() {
 
             <button 
               onClick={scrollToTop}
-              className="mt-8 group flex items-center gap-2 text-left w-fit"
+              className="mt-8 group flex items-center gap-2 text-left w-fit hover:cursor-cell"
             >
               <div className="w-12 h-12 border-2 border-dirty-white flex items-center justify-center bg-white/5 group-hover:bg-acid-green group-hover:border-acid-green group-hover:text-void-black transition-all duration-300">
                 <ArrowUp size={24} />

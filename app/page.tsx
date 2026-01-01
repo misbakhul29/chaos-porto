@@ -7,7 +7,7 @@ import ProjectShowcase from "./components/Projects";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen w-full flex flex-col gap-0">
+    <div id="home" className="relative min-h-screen w-full flex flex-col gap-0">
       <Header />
       <HeroSection />
       <About />

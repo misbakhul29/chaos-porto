@@ -150,7 +150,7 @@ export default function Contact() {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full glitch-btn py-3 text-sm md:text-base font-bold tracking-[0.2em] mt-6"
+                            className="w-full glitch-btn py-3 text-sm md:text-base font-bold tracking-[0.2em] mt-6 hover:cursor-cell"
                         >
                             {isSubmitting ? "TRANSMITTING..." : "SEND_DATA"}
                         </button>

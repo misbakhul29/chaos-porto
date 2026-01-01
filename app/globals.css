@@ -75,6 +75,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    cursor: crosshair;
   }
 
   body {

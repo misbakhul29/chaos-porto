@@ -22,7 +22,7 @@ export default function HeroSection() {
             </p>
 
             <div className="mt-16 transform -rotate-2 z-70">
-                <button onClick={() => handleDownloadResume() } className="glitch-btn px-10 py-4 text-2xl font-bold font-mono tracking-tighter cursor-cell">
+                <button onClick={() => handleDownloadResume() } className="glitch-btn px-10 py-4 text-2xl font-bold font-mono tracking-tighter hover:cursor-cell">
                     Execute()
                 </button>
             </div>

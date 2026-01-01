@@ -156,7 +156,7 @@ export default function About() {
                                 <div
                                     key={item.id}
                                     onClick={() => setActiveModal(item)}
-                                    className="group relative cursor-pointer w-fit ml-auto py-1"
+                                    className="group relative cursor-pointer w-fit ml-auto py-1 hover:cursor-cell"
                                 >
                                     <div className={`absolute -right-8 top-1/2 w-0 h-1 ${item.id === 'deploy' ? 'bg-hazard-orange' : 'bg-dirty-white'} transition-all duration-200 group-hover:w-6`}></div>
 

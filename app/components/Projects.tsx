@@ -98,7 +98,7 @@ export default function ProjectShowcase() {
             onClick={() => setSelectedProject(project)}
             className={`
               scribble-box aspect-square p-4 flex items-center justify-center overflow-hidden group cursor-pointer
-              transform transition-all duration-300 z-80 hover:z-90 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]
+              transform transition-all duration-300 z-80 hover:z-90 hover:scale-105 hover:cursor-cell hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]
               ${project.rotateClass}
             `}
           >
