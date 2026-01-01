@@ -20,14 +20,24 @@ export default function Contact() {
         setIsSubmitting(true);
         setIsError(false);
 
+        const accessKey = process.env.NEXT_PUBLIC_W3_FORMS_ACCESS_KEY;
+
+        if (!accessKey) {
+            console.error("Access Key missing!");
+            setIsError(true);
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
-            const res = await fetch("/api/contact", {
+            const res = await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
                 body: JSON.stringify({
+                    access_key: accessKey, 
                     name: (data as Record<string, unknown>).name as string,
                     email: (data as Record<string, unknown>).email as string,
                     message: (data as Record<string, unknown>).message as string,
@@ -42,9 +52,11 @@ export default function Contact() {
                 reset();
                 setTimeout(() => setIsSuccess(false), 5000);
             } else {
+                console.error("Web3Forms Error:", result);
                 setIsError(true);
             }
-        } catch (err: unknown) {
+        } catch (err) {
+            console.error("Network Error:", err);
             setIsError(true);
         } finally {
             setIsSubmitting(false);
@@ -146,6 +158,8 @@ export default function Contact() {
                                 </span>
                             )}
                         </div>
+
+                        <input type="checkbox" className="hidden" style={{ display: 'none' }} {...register("botcheck")} />
 
                         <button
                             type="submit"
