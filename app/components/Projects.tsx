@@ -151,7 +151,7 @@ export default function ProjectShowcase() {
             <div className="noise-overlay opacity-10"></div>
           </div>
 
-          <div className="relative w-full max-w-4xl bg-void-black border-2 border-dirty-white shadow-[10px_10px_0px_var(--color-acid-green)] animate-in zoom-in-95 duration-300 flex flex-col md:flex-row overflow-hidden max-h-[90vh]">
+          <div className="relative w-full max-w-4xl bg-void-black border-2 border-dirty-white shadow-[10px_10px_0px_var(--color-acid-green)] animate-in zoom-in-95 duration-300 flex flex-col md:flex-row max-h-[90vh]">
             <div className="absolute top-6 right-20 z-50">
               <button
                 onClick={() => setLanguage(prev => prev === "en" ? "id" : "en")}
@@ -160,6 +160,8 @@ export default function ProjectShowcase() {
                 [ <span className={language === "en" ? "text-acid-green" : "text-dirty-white/50"}>EN</span> / <span className={language === "id" ? "text-acid-green" : "text-dirty-white/50"}>ID</span> ]
               </button>
             </div>
+
+            <div className="tape -top-4 right-10 rotate-3"></div>
             
             <div className={`w-full md:w-1/3 ${selectedProject.theme} p-8 flex flex-col justify-between relative overflow-hidden`}>
               <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-multiply"></div>
@@ -187,7 +189,7 @@ export default function ProjectShowcase() {
             </div>
 
             <div className="w-full md:w-2/3 p-8 md:p-12 flex flex-col bg-void-black text-dirty-white relative">
-              <div className="tape top-4 right-10 rotate-3"></div>
+              
 
               <h4 className="text-xl font-bold text-acid-green mb-4 flex items-center gap-2">
                 <span className="animate-pulse">_</span> {t.desc_title}
