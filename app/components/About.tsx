@@ -103,10 +103,10 @@ export default function About() {
     const t = BIO_TEXT[language];
 
     return (
-        <div id="about" className="flex flex-col gap-20 min-h-screen justify-center py-20 md:py-0 overflow-hidden">
+        <div id="about" className="flex flex-col gap-20 h-fit md:min-h-screen justify-center py-20 md:py-0 overflow-hidden">
             <Marquee />
 
-            <section className="max-w-7xl w-full mx-auto px-6 relative">
+            <section className="max-w-7xl w-full mx-auto px-6 relative mt-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     
                     <div className="relative group">

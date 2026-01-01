@@ -80,11 +80,11 @@ export default function ProjectShowcase() {
   const t = UI_TEXT[language];
 
   return (
-    <section id="projects" className="px-4 pt-50 py-20 bg-void-black relative overflow-hidden">
+    <section id="projects" className="px-4 md:pt-50 py-10 md:py-20 bg-void-black relative overflow-hidden">
 
       <div className="absolute inset-0 opacity-5 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
-      <h2 className="text-center font-glitch text-5xl md:text-8xl mb-18 md:mb-24 relative inline-block w-full">
+      <h2 className="text-center font-glitch text-4xl md:text-8xl mb-18 md:mb-24 relative inline-block w-full">
         <span className="relative z-10 text-dirty-white">VISUAL_NOISE</span>
         <span className="absolute top-2 left-1/2 -translate-x-1/2 text-hot-pink z-5 opacity-70 blur-sm select-none">
           VISUAL_NOISE

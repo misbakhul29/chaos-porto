@@ -78,7 +78,7 @@ export default function Contact() {
                     <div className="tape bottom-3 -right-3 rotate-45 bg-hot-pink/50 scale-75"></div>
 
                     <div className="mb-6 text-center">
-                        <h2 className="font-glitch text-4xl md:text-5xl text-dirty-white mb-1">
+                        <h2 className="font-glitch text-2xl md:text-5xl text-dirty-white mb-1">
                             DROP_A_<span className="text-acid-green">SIGNAL</span>
                         </h2>
                         <p className="font-mono text-xs md:text-sm text-dirty-white/70">
