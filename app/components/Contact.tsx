@@ -52,11 +52,11 @@ export default function Contact() {
     };
 
     return (
-        <div className="flex flex-col h-screen items-center justify-center">
+        <div className="flex flex-col h-screen items-center justify-center overflow-hidden">
             <Marquee />
 
-            <section id="contact" className="max-w-2xl mx-auto px-6 py-16 relative">
-                <div className="font-glitch text-[5rem] md:text-[6rem] text-dirty-white opacity-10 z-0 select-none pointer-events-none overflow-hidden leading-none">
+            <section id="contact" className="max-w-2xl mx-auto px-6 py-16 relative flex flex-col items-center justify-center">
+                <div className="font-glitch text-6xl md:text-[6rem] text-dirty-white opacity-10 z-0 select-none pointer-events-none overflow-hidden leading-none">
                     CONNECT
                 </div>
 
