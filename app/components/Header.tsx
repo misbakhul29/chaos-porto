@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import MarkerTitle from "./logo/Marker";
 import { Menu, X } from "lucide-react";
-import { metadata } from "@/lib/metadata";
+import { data as metadata } from "@/lib/metadata";
 
 export default function Header() {
     const firstTitle = metadata.title ? metadata.title.toString().split(" ")[0] : "Chaos"; 
