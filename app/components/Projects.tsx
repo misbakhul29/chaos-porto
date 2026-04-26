@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // --- 1. DATA PROJECTS (Updated with EN/ID) ---
 const PROJECTS = [
@@ -21,16 +21,16 @@ const PROJECTS = [
   {
     id: 2,
     number: "02",
-    title: "MIKA_CHATBOT",
-    category: "#CHATBOT",
-    year: "2024",
+    title: "GOLANG_SMTP",
+    category: "#SMTP_API",
+    year: "2026",
     theme: "bg-hot-pink",
     text: "text-void-black",
     rotateClass: "md:mt-12 md:rotate-3",
-    description_id: "Ekosistem AI Chatbot end-to-end ditenagai Google Gemini. Arsitektur 3-tier: REST API Server, Backoffice Dashboard untuk manajemen bot, dan Embeddable Widget yang ringan (~15KB).",
-    description_en: "End-to-end AI Chatbot ecosystem powered by Google Gemini. 3-tier architecture: REST API Server, Backoffice Dashboard for bot management, and a lightweight Embeddable Widget (~15KB).",
-    tech: ["Gemini AI", "Node.js", "MongoDB", "React", "Vite"],
-    links: { demo: undefined, github: "https://github.com/misbakhul29/Mika" }
+    description_id: "Layanan REST API pengirim email yang sangat cepat dan ringan berbasis Go. Dilengkapi dengan middleware keamanan, sanitasi injeksi header, in-memory rate limiting, dan autentikasi API Key.",
+    description_en: "Blazing fast and lightweight email sender REST API service built with Go. Equipped with security middleware, header injection sanitization, in-memory rate limiting, and API Key authentication.",
+    tech: ["Golang", "SMTP", "Nginx", "PM2"],
+    links: { demo: "https://smtp.misbakhul.my.id/", github: "https://github.com/misbakhul29/goalng-smtp-server" }
   },
   {
     id: 3,
@@ -162,7 +162,7 @@ export default function ProjectShowcase() {
             </div>
 
             <div className="tape -top-4 right-10 rotate-3"></div>
-            
+
             <div className={`w-full md:w-1/3 ${selectedProject.theme} p-8 flex flex-col justify-between relative overflow-hidden`}>
               <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-multiply"></div>
 
@@ -189,7 +189,7 @@ export default function ProjectShowcase() {
             </div>
 
             <div className="w-full md:w-2/3 p-8 md:p-12 flex flex-col bg-void-black text-dirty-white relative">
-              
+
 
               <h4 className="text-xl font-bold text-acid-green mb-4 flex items-center gap-2">
                 <span className="animate-pulse">_</span> {t.desc_title}

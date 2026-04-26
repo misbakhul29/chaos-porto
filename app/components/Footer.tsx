@@ -1,7 +1,7 @@
 "use client";
 
+import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
-import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -23,16 +23,16 @@ export default function Footer() {
 
   return (
     <footer className="bg-void-black border-t-8 border-dirty-white pt-16 pb-8 relative overflow-hidden">
-      
+
       <div className="absolute inset-0 opacity-5 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
-      
+
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
-          
+
           <div className="md:col-span-5 flex flex-col justify-between">
             <div>
               <h2 className="font-glitch text-5xl md:text-7xl text-dirty-white mb-4 leading-[0.8]">
-                CHAOS<br/>
+                CHAOS<br />
                 <span className="text-acid-green">PORTO_</span>
               </h2>
               <p className="font-mono text-dirty-white/60 max-w-sm">
@@ -40,7 +40,7 @@ export default function Footer() {
                 Built with raw code and heavy caffeine.`}
               </p>
             </div>
-            
+
             <div className="mt-8 flex items-center gap-2 font-mono text-xs text-electric-blue border border-electric-blue/30 w-fit px-3 py-1">
               <span className="w-2 h-2 bg-electric-blue rounded-full animate-pulse"></span>
               SYSTEM STATUS: ONLINE
@@ -52,8 +52,8 @@ export default function Footer() {
             <ul className="space-y-2 font-bold font-(--font-space-grotesk)">
               {NAV_LINKS.map((link) => (
                 <li key={link.name}>
-                  <Link 
-                    href={link.href} 
+                  <Link
+                    href={link.href}
                     className="group flex items-center gap-2 text-dirty-white hover:text-acid-green hover:cursor-cell transition-colors"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xs">
@@ -89,7 +89,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={scrollToTop}
               className="mt-8 group flex items-center gap-2 text-left w-fit hover:cursor-cell"
             >

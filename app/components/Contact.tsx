@@ -20,28 +20,16 @@ export default function Contact() {
         setIsSubmitting(true);
         setIsError(false);
 
-        const accessKey = process.env.NEXT_PUBLIC_W3_FORMS_ACCESS_KEY;
-
-        if (!accessKey) {
-            console.error("Access Key missing!");
-            setIsError(true);
-            setIsSubmitting(false);
-            return;
-        }
+        const payload = data as Record<string, unknown>;
 
         try {
-            const res = await fetch("https://api.web3forms.com/submit", {
+            const res = await fetch("/api/contact", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    access_key: accessKey, 
-                    name: (data as Record<string, unknown>).name as string,
-                    email: (data as Record<string, unknown>).email as string,
-                    message: (data as Record<string, unknown>).message as string,
-                    subject: "New Message from Chaos Portfolio",
+                    name: payload.name as string,
+                    email: payload.email as string,
+                    message: payload.message as string,
                 }),
             });
 
@@ -52,11 +40,9 @@ export default function Contact() {
                 reset();
                 setTimeout(() => setIsSuccess(false), 5000);
             } else {
-                console.error("Web3Forms Error:", result);
                 setIsError(true);
             }
-        } catch (err) {
-            console.error("Network Error:", err);
+        } catch {
             setIsError(true);
         } finally {
             setIsSubmitting(false);
@@ -77,13 +63,19 @@ export default function Contact() {
                     <div className="tape -top-3 left-1/2 -translate-x-1/2 scale-75"></div>
                     <div className="tape bottom-3 -right-3 rotate-45 bg-hot-pink/50 scale-75"></div>
 
-                    <div className="mb-6 text-center">
+                    <div className="mb-6 text-center flex flex-col items-center">
                         <h2 className="font-glitch text-2xl md:text-5xl text-dirty-white mb-1">
                             DROP_A_<span className="text-acid-green">SIGNAL</span>
                         </h2>
-                        <p className="font-mono text-xs md:text-sm text-dirty-white/70">
+                        <p className="font-mono text-xs md:text-sm text-dirty-white/70 mb-3">
                             {`// Interested in collaboration? Send encrypted data.`}
                         </p>
+                        <div className="inline-block border border-hot-pink/30 bg-hot-pink/10 px-2 py-1 w-fit">
+                            <p className="font-mono text-[10px] text-hot-pink flex items-center gap-1 justify-center">
+                                <span className="animate-pulse">⚡</span>
+                                POWERED BY <a href="https://smtp.misbakhul.my.id/" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors cursor-cell">GOLANG_SMTP API</a>
+                            </p>
+                        </div>
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -159,7 +151,7 @@ export default function Contact() {
                             )}
                         </div>
 
-                        <input type="checkbox" className="hidden" style={{ display: 'none' }} {...register("botcheck")} />
+
 
                         <button
                             type="submit"
