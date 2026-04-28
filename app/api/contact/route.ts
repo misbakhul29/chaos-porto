@@ -34,9 +34,10 @@ export async function POST(request: Request) {
                 "X-API-Key": SMTP_API_KEY,
             },
             body: JSON.stringify({
-                sender_email: email,
+                sender: email,
+                send_to: "misbakhul2904@gmail.com",
                 subject: `[Chaos Portfolio] New message from ${name}`,
-                message,
+                email: `${message}\n\nFrom: ${name} <${email}>`,
             }),
         });
 
