@@ -44,8 +44,8 @@ const PROJECTS = [
     hasPattern: true,
     description_id: "Engine web scraping otomatis yang berjalan di VPS. Menggunakan browser headless dengan teknik anti-bot detection canggih untuk mengumpulkan data pasar secara real-time.",
     description_en: "Automated web scraping engine running on VPS. Uses headless browsers with advanced anti-bot detection techniques to collect market data in real-time.",
-    tech: ["Puppeteer", "Node.js", "Redis", "PM2"],
-    links: { demo: "https://misbakhul.cloud/", github: "https://github.com/misbakhul29/scraper" }
+    tech: ["Golang", "Rabbitmq", "PM2", "Playwright"],
+    links: { demo: "", github: "https://github.com/misbakhul29/scraper-golang" }
   },
 ];
 

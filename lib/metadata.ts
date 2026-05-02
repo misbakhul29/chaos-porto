@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 
 export const data: Metadata = {
-    title: "Misbakhul Munir",
-    description: "A portfolio website for Misbakhul Munir",
+    title: "Misbakhul Munir - Fullstack Web Developer",
+    description: "Hello World, My Name Is Misbakhul Munir and I am a Web Developer based in Central Java, Indonesia.",
     keywords: ["portfolio", "Misbakhul Munir", "web development", "next.js", "fullstack", "indonesia", "typescript", "react", "frontend", "backend", "postgres", "ui ux"],
-    authors: [{ name: "Misbakhul Munir" }],
+    authors: [{ name: "Misbakhul Munir", url: "https://github.com/misbakhul29" }],
     applicationName: "Misbakhul Munir Portfolio",
     creator: "Misbakhul Munir",
     publisher: "Misbakhul Munir",
@@ -21,8 +21,8 @@ export const data: Metadata = {
     generator: "Next.js",
     manifest: "/site.webmanifest",
     abstract: "A portfolio website for Misbakhul Munir with Next.js",
-    category: "portfolio",
-    classification: "portfolio",
+    category: "Portfolio",
+    classification: "Portfolio",
     metadataBase: new URL("https://misbakhul.my.id/"),
     robots: {
         index: true,
@@ -48,8 +48,8 @@ export const data: Metadata = {
         yandex: "a5a5cb66b2a62ac4",
     },
     openGraph: {
-        title: "Misbakhul Munir",
-        description: "A portfolio website for Misbakhul Munir",
+        title: "Misbakhul Munir | Fullstack Web Developer",
+        description: "Hello World, My Name Is Misbakhul Munir and I am a Web Developer based in Central Java, Indonesia.",
         url: "https://misbakhul.my.id/",
         siteName: "Misbakhul Munir Portfolio",
         images: [
@@ -66,4 +66,10 @@ export const data: Metadata = {
         emails: ["misbakhul2904@gmail.com", "misbakhul29munir@gmail.com"],
         phoneNumbers: ["+62882008718112"],
     },
+    pinterest: {
+        richPin: true
+    },
+    alternates: {
+        canonical: "https://misbakhul.my.id/",
+    }
 };
