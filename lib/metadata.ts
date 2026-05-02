@@ -71,5 +71,5 @@ export const data: Metadata = {
     },
     alternates: {
         canonical: "https://misbakhul.my.id/",
-    }
+    },
 };
