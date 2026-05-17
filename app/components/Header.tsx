@@ -1,12 +1,17 @@
-"use client"; 
+"use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import MarkerTitle from "./logo/Marker";
 import { Menu, X } from "lucide-react";
 import { data as metadata } from "@/lib/metadata";
 
 export default function Header() {
-    const firstTitle = metadata.title ? metadata.title.toString().split(" ")[0] : "Chaos"; 
+    const pathname = usePathname();
+    const isHomePage = pathname === "/";
+
+    const firstTitle = metadata.title ? metadata.title.toString().split(" ")[0] : "Chaos";
     const secondTitle = metadata.title ? metadata.title.toString().split(" ")[1] : "Porto";
 
     const [isOpen, setIsOpen] = useState(false);
@@ -22,25 +27,25 @@ export default function Header() {
     const navItems = [
         {
             name: "Home",
-            href: "#home",
+            href: isHomePage ? "#home" : "/",
             className: "hover:text-acid-green -rotate-3 hover:rotate-3",
             mobileColor: "text-acid-green"
         },
         {
             name: "About",
-            href: "#about",
+            href: isHomePage ? "#about" : "/#about",
             className: "hover:text-hot-pink rotate-3 hover:-rotate-3",
             mobileColor: "text-hot-pink"
         },
         {
             name: "Projects",
-            href: "#projects",
+            href: "/projects",
             className: "hover:text-electric-blue -rotate-3 hover:rotate-3",
             mobileColor: "text-electric-blue"
         },
         {
             name: "Contact",
-            href: "#contact",
+            href: isHomePage ? "#contact" : "/#contact",
             className: "hover:text-hazard-orange rotate-3 hover:-rotate-3",
             mobileColor: "text-hazard-orange"
         },
@@ -48,8 +53,7 @@ export default function Header() {
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         setIsOpen(false);
-        
-        if (href.startsWith("#")) {
+        if (href.startsWith("#") && isHomePage) {
             e.preventDefault();
             const targetId = href.replace("#", "");
             const elem = document.getElementById(targetId);
