@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: "*",
             allow: "/",
         },
-        sitemap: "https://misbakhul.my.id/sitemap.xml",
+        sitemap: "https://misbakhul.com/sitemap.xml",
     };
 }
