@@ -16,15 +16,15 @@ export default function Footer() {
 
   const NAV_LINKS = [
     { name: "HOME", href: "/" },
-    { name: "ABOUT", href: "#about" },
-    { name: "PROJECTS", href: "#projects" },
-    { name: "CONTACT", href: "#contact" },
+    { name: "ABOUT", href: "/about" },
+    { name: "PROJECTS", href: "/projects" },
+    { name: "CONTACT", href: "/#contact" },
   ];
 
   return (
     <footer className="bg-void-black border-t-8 border-dirty-white pt-16 pb-8 relative overflow-hidden">
 
-      <div className="absolute inset-0 opacity-5 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]"></div>
+      <div className="noise-overlay absolute! opacity-5"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
@@ -49,7 +49,7 @@ export default function Footer() {
 
           <div className="md:col-span-3">
             <h3 className="font-marker text-xl text-hot-pink mb-6 rotate-1">NAVIGATION</h3>
-            <ul className="space-y-2 font-bold font-(--font-space-grotesk)">
+            <ul className="space-y-2 font-(--font-space-grotesk)">
               {NAV_LINKS.map((link) => (
                 <li key={link.name}>
                   <Link

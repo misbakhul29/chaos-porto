@@ -6,6 +6,10 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import projects from "@/app/projects/projects";
 import { motion, AnimatePresence } from "motion/react";
+import Tape from "@/app/components/ui/Tape";
+import Button from "@/app/components/ui/Button";
+import Modal from "@/app/components/ui/Modal";
+import { useLanguage } from "@/app/context/LanguageContext";
 import {
   Terminal,
   Grid,
@@ -107,7 +111,7 @@ const UI_TEXT = {
 
 export default function ProjectsPageClient() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [language, setLanguage] = useState<"en" | "id">("en");
+  const { language, setLanguage } = useLanguage();
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
@@ -139,7 +143,7 @@ export default function ProjectsPageClient() {
   useEffect(() => {
     return () => {
       if (audioContextRef.current) {
-        audioContextRef.current.close().catch(() => {});
+        audioContextRef.current.close().catch(() => { });
         audioContextRef.current = null;
       }
     };
@@ -392,7 +396,7 @@ export default function ProjectsPageClient() {
 
   return (
     <div className="relative min-h-screen bg-void-black flex flex-col justify-between overflow-x-hidden">
-      <div className="absolute inset-0 opacity-5 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]"></div>
+      <div className="noise-overlay absolute! opacity-5"></div>
 
       <Header />
 
@@ -411,18 +415,20 @@ export default function ProjectsPageClient() {
           </div>
 
           <div className="flex gap-4">
-            <button
+            <Button
+              variant="outline"
               onClick={() => {
                 playSynthSound("click");
                 setLanguage((prev) => (prev === "en" ? "id" : "en"));
               }}
-              className="px-4 py-2 border-2 border-dirty-white/20 bg-white/5 hover:border-acid-green hover:text-acid-green font-mono text-xs cursor-pointer transition-colors"
+              className="px-4 py-2 border-dirty-white/20 bg-white/5 hover:border-acid-green hover:text-acid-green font-mono text-xs"
             >
               [ {language.toUpperCase()} ]
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
               onClick={() => setSoundEnabled((prev) => !prev)}
-              className="px-4 py-2 border-2 border-dirty-white/20 bg-white/5 hover:border-hot-pink hover:text-hot-pink font-mono text-xs cursor-pointer transition-colors flex items-center gap-2"
+              className="px-4 py-2 border-dirty-white/20 bg-white/5 hover:border-hot-pink hover:text-hot-pink font-mono text-xs flex items-center gap-2"
             >
               {soundEnabled ? (
                 <>
@@ -433,7 +439,7 @@ export default function ProjectsPageClient() {
                   <VolumeX size={14} className="text-hot-pink" /> [ MUTED ]
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -468,12 +474,13 @@ export default function ProjectsPageClient() {
               className="grow bg-transparent border-none outline-none font-mono text-xs text-acid-green placeholder-acid-green/30"
               maxLength={80}
             />
-            <button
+            <Button
               type="submit"
-              className="bg-acid-green text-void-black font-mono font-bold text-[10px] px-3 py-1 cursor-pointer hover:bg-hot-pink hover:text-dirty-white transition-colors"
+              variant="retro"
+              className="bg-acid-green text-void-black border-none px-3 py-1 text-[10px] font-bold hover:bg-hot-pink hover:text-dirty-white"
             >
               EXECUTE
-            </button>
+            </Button>
           </form>
         </div>
 
@@ -513,11 +520,10 @@ export default function ProjectsPageClient() {
                   <button
                     key={cat}
                     onClick={() => handleCategorySelect(cat)}
-                    className={`font-mono text-[10px] border px-2.5 py-1 transition-all cursor-pointer ${
-                      selectedCategory === cat
-                        ? "bg-hot-pink text-void-black border-hot-pink font-bold shadow-[2px_2px_0_var(--color-electric-blue)]"
-                        : "border-dirty-white/20 hover:border-dirty-white/60 text-dirty-white/80"
-                    }`}
+                    className={`font-mono text-[10px] border px-2.5 py-1 transition-all cursor-pointer ${selectedCategory === cat
+                      ? "bg-hot-pink text-void-black border-hot-pink font-bold shadow-[2px_2px_0_var(--color-electric-blue)]"
+                      : "border-dirty-white/20 hover:border-dirty-white/60 text-dirty-white/80"
+                      }`}
                   >
                     {cat}
                   </button>
@@ -534,11 +540,10 @@ export default function ProjectsPageClient() {
                   <button
                     key={tech}
                     onClick={() => toggleTechFilter(tech)}
-                    className={`font-mono text-[9px] border px-2 py-0.5 transition-all cursor-pointer ${
-                      selectedTechs.includes(tech)
-                        ? "bg-acid-green text-void-black border-acid-green font-bold shadow-[2px_2px_0_var(--color-hot-pink)]"
-                        : "border-dirty-white/10 hover:border-dirty-white/30 text-dirty-white/60"
-                    }`}
+                    className={`font-mono text-[9px] border px-2 py-0.5 transition-all cursor-pointer ${selectedTechs.includes(tech)
+                      ? "bg-acid-green text-void-black border-acid-green font-bold shadow-[2px_2px_0_var(--color-hot-pink)]"
+                      : "border-dirty-white/10 hover:border-dirty-white/30 text-dirty-white/60"
+                      }`}
                   >
                     {tech}
                   </button>
@@ -555,11 +560,10 @@ export default function ProjectsPageClient() {
                   <button
                     key={year}
                     onClick={() => handleYearSelect(year)}
-                    className={`font-mono text-[10px] border px-2.5 py-1 transition-all cursor-pointer ${
-                      selectedYear === year
-                        ? "bg-electric-blue text-void-black border-electric-blue font-bold shadow-[2px_2px_0_var(--color-hot-pink)]"
-                        : "border-dirty-white/20 hover:border-dirty-white/60 text-dirty-white/80"
-                    }`}
+                    className={`font-mono text-[10px] border px-2.5 py-1 transition-all cursor-pointer ${selectedYear === year
+                      ? "bg-electric-blue text-void-black border-electric-blue font-bold shadow-[2px_2px_0_var(--color-hot-pink)]"
+                      : "border-dirty-white/20 hover:border-dirty-white/60 text-dirty-white/80"
+                      }`}
                   >
                     {year}
                   </button>
@@ -571,13 +575,13 @@ export default function ProjectsPageClient() {
               selectedTechs.length > 0 ||
               selectedCategory ||
               selectedYear) && (
-              <button
-                onClick={resetAllFilters}
-                className="mt-4 border-2 border-dashed border-hot-pink text-hot-pink hover:bg-hot-pink hover:text-void-black transition-all py-2 text-xs font-mono font-bold tracking-widest cursor-pointer w-full text-center"
-              >
-                {t.resetFilters}
-              </button>
-            )}
+                <button
+                  onClick={resetAllFilters}
+                  className="mt-4 border-2 border-dashed border-hot-pink text-hot-pink hover:bg-hot-pink hover:text-void-black transition-all py-2 text-xs font-mono font-bold tracking-widest cursor-pointer w-full text-center"
+                >
+                  {t.resetFilters}
+                </button>
+              )}
           </div>
 
           <div className="lg:col-span-3 flex flex-col gap-6">
@@ -598,11 +602,10 @@ export default function ProjectsPageClient() {
                     playSynthSound("click");
                     setViewMode("grid");
                   }}
-                  className={`px-3 py-2 cursor-pointer transition-colors flex items-center gap-2 font-mono text-[10px] ${
-                    viewMode === "grid"
-                      ? "bg-dirty-white text-void-black font-bold"
-                      : "bg-transparent text-dirty-white/60 hover:text-dirty-white"
-                  }`}
+                  className={`px-3 py-2 cursor-pointer transition-colors flex items-center gap-2 font-mono text-[10px] ${viewMode === "grid"
+                    ? "bg-dirty-white text-void-black font-bold"
+                    : "bg-transparent text-dirty-white/60 hover:text-dirty-white"
+                    }`}
                 >
                   <Grid size={12} />
                   {t.viewGrid}
@@ -612,11 +615,10 @@ export default function ProjectsPageClient() {
                     playSynthSound("click");
                     setViewMode("list");
                   }}
-                  className={`px-3 py-2 cursor-pointer transition-colors flex items-center gap-2 font-mono text-[10px] ${
-                    viewMode === "list"
-                      ? "bg-dirty-white text-void-black font-bold"
-                      : "bg-transparent text-dirty-white/60 hover:text-dirty-white"
-                  }`}
+                  className={`px-3 py-2 cursor-pointer transition-colors flex items-center gap-2 font-mono text-[10px] ${viewMode === "list"
+                    ? "bg-dirty-white text-void-black font-bold"
+                    : "bg-transparent text-dirty-white/60 hover:text-dirty-white"
+                    }`}
                 >
                   <List size={12} />
                   {t.viewList}
@@ -796,165 +798,159 @@ export default function ProjectsPageClient() {
         </div>
       </main>
 
-      <AnimatePresence>
+      <Modal
+        isOpen={selectedProject !== null}
+        onClose={() => {
+          playSynthSound("click");
+          setSelectedProject(null);
+        }}
+        showCloseButton={false}
+        noiseOpacity="opacity-15"
+        containerClassName="relative w-full max-w-4xl bg-void-black border-2 border-dirty-white shadow-[10px_10px_0px_var(--color-acid-green)] overflow-hidden flex flex-col md:flex-row max-h-[90vh] !p-0"
+      >
         {selectedProject && (
-          <div className="fixed inset-0 z-99999 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-void-black/95 backdrop-blur-md cursor-pointer"
-              onClick={() => setSelectedProject(null)}
-            >
-              <div className="noise-overlay opacity-15"></div>
-            </motion.div>
+          <>
+            <div className="absolute top-6 right-20 z-50">
+              <Button
+                variant="retro"
+                onClick={() => {
+                  playSynthSound("success");
+                  setLanguage((prev) => (prev === "en" ? "id" : "en"));
+                }}
+                className="text-[9px] px-2.5 py-1.5 bg-void-black/50 backdrop-blur-sm"
+              >
+                [ {t.languagesToggle}: {language.toUpperCase()} ]
+              </Button>
+            </div>
 
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 220 }}
-              className="relative w-full max-w-4xl bg-void-black border-2 border-dirty-white shadow-[10px_10px_0px_var(--color-acid-green)] overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+            <Tape className="-top-4 right-10 rotate-3" />
+
+            <div
+              className={`w-full md:w-1/3 ${selectedProject.theme} p-8 flex flex-col justify-between relative overflow-hidden`}
             >
-              <div className="absolute top-6 right-20 z-50">
-                <button
+              <div className="noise-overlay absolute! opacity-20 mix-blend-multiply"></div>
+
+              <span className="font-glitch text-8xl text-void-black opacity-30 absolute -top-4 -left-4 select-none">
+                {selectedProject.number}
+              </span>
+
+              <div className="relative z-10 mt-10">
+                <h3 className="font-black text-3xl uppercase text-void-black leading-none mb-3 tracking-tighter">
+                  {selectedProject.title.split("_")[0]}
+                  <br />
+                  {selectedProject.title.split("_")[1] || ""}
+                </h3>
+                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] bg-void-black text-dirty-white px-2 py-1">
+                  <Clock size={10} className="text-acid-green" />
+                  <span>
+                    {t.yearLabel}: {selectedProject.year}
+                  </span>
+                </div>
+              </div>
+
+              <div className="relative z-10 mt-auto pt-8 border-t border-void-black/10">
+                <div className="w-8 h-1 bg-void-black mb-3"></div>
+                <p className="font-mono text-[10px] text-void-black font-bold tracking-widest uppercase">
+                  TYPE: {selectedProject.category}
+                </p>
+              </div>
+            </div>
+
+            <div className="w-full md:w-2/3 p-8 md:p-12 flex flex-col bg-void-black text-dirty-white relative overflow-y-auto max-h-[70vh] md:max-h-none">
+              <h4 className="text-lg font-bold text-acid-green mb-4 flex items-center gap-2 font-mono tracking-wider">
+                <Activity
+                  size={16}
+                  className="text-acid-green animate-pulse"
+                />
+                <span>_ {t.drawerTitle}</span>
+              </h4>
+
+              <div className="grid grid-cols-2 gap-4 mb-6 border border-dirty-white/10 p-3 bg-black/40 font-mono text-[10px]">
+                <div>
+                  <span className="text-dirty-white/40 block mb-0.5">
+                    // {t.uuidLabel}
+                  </span>
+                  <span className="text-electric-blue font-bold">
+                    0x00F{selectedProject.id}82BA
+                  </span>
+                </div>
+                <div>
+                  <span className="text-dirty-white/40 block mb-0.5">
+                    // {t.statusLabel}
+                  </span>
+                  <span className="text-acid-green font-bold flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 bg-acid-green rounded-full animate-ping"></span>
+                    {t.operational.toUpperCase()}
+                  </span>
+                </div>
+              </div>
+
+              <p className="font-sans text-base md:text-lg leading-relaxed mb-8 text-dirty-white/80">
+                {language === "en"
+                  ? selectedProject.description_en
+                  : selectedProject.description_id}
+              </p>
+
+              <div className="mb-8">
+                <h4 className="text-xs font-bold text-hot-pink mb-3 font-mono tracking-wider">
+                  {`// ${t.techStackHeader}`}
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedProject.tech.map((tech) => (
+                    <span
+                      key={tech}
+                      className="border border-dirty-white/20 bg-white/5 px-2.5 py-1 text-xs font-mono text-dirty-white/70 hover:bg-dirty-white hover:text-void-black hover:border-dirty-white transition-all cursor-crosshair"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-auto grid grid-cols-2 gap-4 pt-4 border-t border-dirty-white/10">
+                <Button
+                  disabled={!selectedProject.links.demo}
                   onClick={() => {
                     playSynthSound("success");
-                    setLanguage((prev) => (prev === "en" ? "id" : "en"));
+                    if (selectedProject.links.demo) {
+                      window.open(selectedProject.links.demo);
+                    }
                   }}
-                  className="font-mono text-[9px] font-bold text-dirty-white hover:text-acid-green border border-dirty-white/30 px-2.5 py-1.5 bg-void-black/50 backdrop-blur-sm cursor-pointer transition-colors"
+                  variant="glitch"
+                  className="py-3 text-xs tracking-widest flex items-center justify-center gap-2"
                 >
-                  [ {t.languagesToggle}: {language.toUpperCase()} ]
-                </button>
-              </div>
-
-              <div className="tape -top-4 right-10 rotate-3"></div>
-
-              <div
-                className={`w-full md:w-1/3 ${selectedProject.theme} p-8 flex flex-col justify-between relative overflow-hidden`}
-              >
-                <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')] mix-blend-multiply"></div>
-
-                <span className="font-glitch text-8xl text-void-black opacity-30 absolute -top-4 -left-4 select-none">
-                  {selectedProject.number}
-                </span>
-
-                <div className="relative z-10 mt-10">
-                  <h3 className="font-black text-3xl uppercase text-void-black leading-none mb-3 tracking-tighter">
-                    {selectedProject.title.split("_")[0]}
-                    <br />
-                    {selectedProject.title.split("_")[1] || ""}
-                  </h3>
-                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] bg-void-black text-dirty-white px-2 py-1">
-                    <Clock size={10} className="text-acid-green" />
-                    <span>
-                      {t.yearLabel}: {selectedProject.year}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="relative z-10 mt-auto pt-8 border-t border-void-black/10">
-                  <div className="w-8 h-1 bg-void-black mb-3"></div>
-                  <p className="font-mono text-[10px] text-void-black font-bold tracking-widest uppercase">
-                    TYPE: {selectedProject.category}
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-full md:w-2/3 p-8 md:p-12 flex flex-col bg-void-black text-dirty-white relative overflow-y-auto max-h-[70vh] md:max-h-none">
-                <h4 className="text-lg font-bold text-acid-green mb-4 flex items-center gap-2 font-mono tracking-wider">
-                  <Activity
-                    size={16}
-                    className="text-acid-green animate-pulse"
-                  />
-                  <span>_ {t.drawerTitle}</span>
-                </h4>
-
-                <div className="grid grid-cols-2 gap-4 mb-6 border border-dirty-white/10 p-3 bg-black/40 font-mono text-[10px]">
-                  <div>
-                    <span className="text-dirty-white/40 block mb-0.5">
-                      // {t.uuidLabel}
-                    </span>
-                    <span className="text-electric-blue font-bold">
-                      0x00F{selectedProject.id}82BA
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-dirty-white/40 block mb-0.5">
-                      // {t.statusLabel}
-                    </span>
-                    <span className="text-acid-green font-bold flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 bg-acid-green rounded-full animate-ping"></span>
-                      {t.operational.toUpperCase()}
-                    </span>
-                  </div>
-                </div>
-
-                <p className="font-sans text-base md:text-lg leading-relaxed mb-8 text-dirty-white/80">
-                  {language === "en"
-                    ? selectedProject.description_en
-                    : selectedProject.description_id}
-                </p>
-
-                <div className="mb-8">
-                  <h4 className="text-xs font-bold text-hot-pink mb-3 font-mono tracking-wider">
-                    {`// ${t.techStackHeader}`}
-                  </h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedProject.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="border border-dirty-white/20 bg-white/5 px-2.5 py-1 text-xs font-mono text-dirty-white/70 hover:bg-dirty-white hover:text-void-black hover:border-dirty-white transition-all cursor-crosshair"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-auto grid grid-cols-2 gap-4 pt-4 border-t border-dirty-white/10">
-                  <button
-                    disabled={!selectedProject.links.demo}
-                    onClick={() => {
-                      playSynthSound("success");
-                      if (selectedProject.links.demo) {
-                        window.open(selectedProject.links.demo);
-                      }
-                    }}
-                    className="glitch-btn hover:cursor-cell py-3 text-xs tracking-widest flex items-center justify-center gap-2"
-                  >
-                    <Globe size={14} />
-                    {t.demoBtn}
-                  </button>
-                  <button
-                    disabled={!selectedProject.links.github}
-                    onClick={() => {
-                      playSynthSound("success");
-                      if (selectedProject.links.github) {
-                        window.open(selectedProject.links.github);
-                      }
-                    }}
-                    className="border-2 border-dirty-white text-dirty-white hover:bg-dirty-white hover:text-void-black hover:cursor-cell py-3 text-xs font-bold uppercase transition-colors tracking-widest flex items-center justify-center gap-2"
-                  >
-                    <Github size={14} />
-                    {t.githubBtn}
-                  </button>
-                </div>
-
-                <button
+                  <Globe size={14} />
+                  {t.demoBtn}
+                </Button>
+                <Button
+                  disabled={!selectedProject.links.github}
                   onClick={() => {
-                    playSynthSound("click");
-                    setSelectedProject(null);
+                    playSynthSound("success");
+                    if (selectedProject.links.github) {
+                      window.open(selectedProject.links.github);
+                    }
                   }}
-                  className="absolute top-4 right-4 text-dirty-white/60 hover:text-hot-pink transition-colors p-2 cursor-pointer"
+                  variant="brutalist"
+                  className="py-3 text-xs flex items-center justify-center gap-2"
                 >
-                  <X size={20} />
-                </button>
+                  <Github size={14} />
+                  {t.githubBtn}
+                </Button>
               </div>
-            </motion.div>
-          </div>
+
+              <button
+                onClick={() => {
+                  playSynthSound("click");
+                  setSelectedProject(null);
+                }}
+                className="absolute top-4 right-4 text-dirty-white/60 hover:text-hot-pink transition-colors p-2 cursor-pointer"
+              >
+                <X size={20} />
+              </button>
+            </div>
+          </>
         )}
-      </AnimatePresence>
+      </Modal>
 
       <Footer />
     </div>

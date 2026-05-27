@@ -12,10 +12,26 @@ export default function Schema() {
         "image": `${baseUrl}/og-image.png`,
         "sameAs": [
             "https://github.com/misbakhul29",
-            "https://twitter.com/hazart29"
+            "https://twitter.com/hazart29",
+            "https://www.linkedin.com/in/misbakhul2904"
         ],
-        "jobTitle": "Fullstack Web Developer",
+        "jobTitle": "Full Stack Web Developer",
         "description": metadata.description,
+        "knowsAbout": [
+            "Web Development",
+            "Full Stack Web Development",
+            "Software Engineering",
+            "Next.js",
+            "React",
+            "TypeScript",
+            "JavaScript",
+            "Golang",
+            "PostgreSQL",
+            "Docker",
+            "VPS Deployment",
+            "REST APIs"
+        ],
+        "knowsLanguage": ["English", "Indonesian"],
         "address": {
             "@type": "PostalAddress",
             "addressLocality": "Central Java",
@@ -40,10 +56,10 @@ export default function Schema() {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
         "@id": `${baseUrl}/#service`,
-        "name": "Misbakhul Munir Web Development",
+        "name": "Misbakhul Munir Web Development Services",
         "url": baseUrl,
         "image": `${baseUrl}/og-image.png`,
-        "description": "Professional Fullstack Web Development services using Next.js, React, and TypeScript.",
+        "description": "Professional Full Stack Web Development and Software Engineering services using Next.js, React, TypeScript, and Golang.",
         "address": {
             "@type": "PostalAddress",
             "addressLocality": "Central Java",

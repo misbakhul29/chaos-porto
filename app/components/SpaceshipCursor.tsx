@@ -57,10 +57,10 @@ export default function SpaceshipCursor() {
   const [combo, setCombo] = useState(0);
   const [energy, setEnergy] = useState(0);
   const [comboPopups, setComboPopups] = useState<ComboPopup[]>([]);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [spawnEnabled, setSpawnEnabled] = useState(true);
-  const [shootingEnabled, setShootingEnabled] = useState(true);
-  const [hudEnabled, setHudEnabled] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [spawnEnabled, setSpawnEnabled] = useState(false);
+  const [shootingEnabled, setShootingEnabled] = useState(false);
+  const [hudEnabled, setHudEnabled] = useState(false);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -94,7 +94,7 @@ export default function SpaceshipCursor() {
   const toggleMusic = () => {
     if (!bgmRef.current) return;
     if (isPlaying) bgmRef.current.pause();
-    else bgmRef.current.play().catch(() => {});
+    else bgmRef.current.play().catch(() => { });
     setIsPlaying(!isPlaying);
   };
 
@@ -178,7 +178,7 @@ export default function SpaceshipCursor() {
     if (ultSound) {
       ultSound.volume = 0.5;
       ultSound.playbackRate = 0.5; // Deeper sound for ult
-      ultSound.play().catch(() => {});
+      ultSound.play().catch(() => { });
     }
   }, [energy, mouseX, mouseY]);
 
@@ -305,7 +305,7 @@ export default function SpaceshipCursor() {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isVisible) setIsVisible(true);
       if (isPlaying && bgmRef.current && bgmRef.current.paused)
-        bgmRef.current.play().catch(() => {});
+        bgmRef.current.play().catch(() => { });
       const dx = e.clientX - lastPos.current.x;
       const dy = e.clientY - lastPos.current.y;
       if (Math.abs(dx) > 1 || Math.abs(dy) > 1)
@@ -332,7 +332,7 @@ export default function SpaceshipCursor() {
         if (shootSound) {
           const s = shootSound.cloneNode() as HTMLAudioElement;
           s.volume = 0.2;
-          s.play().catch(() => {});
+          s.play().catch(() => { });
         }
         const rad = (shipRotation * Math.PI) / 180;
         setProjectiles((prev) => [
@@ -411,8 +411,8 @@ export default function SpaceshipCursor() {
                 </div>
                 <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-dirty-white/20 -rotate-45 translate-x-1/2 -translate-y-1/2"></div>
               </button>
-              <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 translate-y-1 scale-95 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 group-hover/tooltip:scale-100 transition-all duration-200 z-[99999] whitespace-nowrap bg-void-black/95 border border-acid-green/40 py-1.5 px-3">
-                <div className="absolute top-0 right-4 w-2 h-2 bg-void-black border-t border-l border-acid-green/40 -translate-y-[5px] rotate-45"></div>
+              <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 translate-y-1 scale-95 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 group-hover/tooltip:scale-100 transition-all duration-200 z-99999 whitespace-nowrap bg-void-black/95 border border-acid-green/40 py-1.5 px-3">
+                <div className="absolute top-0 right-4 w-2 h-2 bg-void-black border-t border-l border-acid-green/40 translate-y-[-5px] rotate-45"></div>
                 <span className="font-mono text-[9px] text-acid-green font-bold tracking-widest uppercase">
                   {isPlaying ? "MUTE_BGM" : "PLAY_BGM"}
                 </span>
@@ -432,8 +432,8 @@ export default function SpaceshipCursor() {
                 </span>
                 <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-dirty-white/20 -rotate-45 translate-x-1/2 -translate-y-1/2"></div>
               </button>
-              <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 translate-y-1 scale-95 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 group-hover/tooltip:scale-100 transition-all duration-200 z-[99999] whitespace-nowrap bg-void-black/95 border border-hot-pink/40 py-1.5 px-3">
-                <div className="absolute top-0 right-4 w-2 h-2 bg-void-black border-t border-l border-hot-pink/40 -translate-y-[5px] rotate-45"></div>
+              <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 translate-y-1 scale-95 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 group-hover/tooltip:scale-100 transition-all duration-200 z-99999 whitespace-nowrap bg-void-black/95 border border-hot-pink/40 py-1.5 px-3">
+                <div className="absolute top-0 right-4 w-2 h-2 bg-void-black border-t border-l border-hot-pink/40 translate-y-[-5px] rotate-45"></div>
                 <span className="font-mono text-[9px] text-hot-pink font-bold tracking-widest uppercase">
                   {spawnEnabled ? "SPAWN_ACTIVE" : "SPAWN_MUTED"}
                 </span>
@@ -453,8 +453,8 @@ export default function SpaceshipCursor() {
                 </span>
                 <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-dirty-white/20 -rotate-45 translate-x-1/2 -translate-y-1/2"></div>
               </button>
-              <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 translate-y-1 scale-95 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 group-hover/tooltip:scale-100 transition-all duration-200 z-[99999] whitespace-nowrap bg-void-black/95 border border-electric-blue/40 py-1.5 px-3">
-                <div className="absolute top-0 right-4 w-2 h-2 bg-void-black border-t border-l border-electric-blue/40 -translate-y-[5px] rotate-45"></div>
+              <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 translate-y-1 scale-95 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 group-hover/tooltip:scale-100 transition-all duration-200 z-99999 whitespace-nowrap bg-void-black/95 border border-electric-blue/40 py-1.5 px-3">
+                <div className="absolute top-0 right-4 w-2 h-2 bg-void-black border-t border-l border-electric-blue/40 translate-y-[-5px] rotate-45"></div>
                 <span className="font-mono text-[9px] text-electric-blue font-bold tracking-widest uppercase">
                   {shootingEnabled ? "WEAPONS_ONLINE" : "WEAPONS_OFFLINE"}
                 </span>
@@ -474,8 +474,8 @@ export default function SpaceshipCursor() {
                 </span>
                 <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-dirty-white/20 -rotate-45 translate-x-1/2 -translate-y-1/2"></div>
               </button>
-              <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 translate-y-1 scale-95 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 group-hover/tooltip:scale-100 transition-all duration-200 z-[99999] whitespace-nowrap bg-void-black/95 border border-acid-green/40 py-1.5 px-3">
-                <div className="absolute top-0 right-4 w-2 h-2 bg-void-black border-t border-l border-acid-green/40 -translate-y-[5px] rotate-45"></div>
+              <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 translate-y-1 scale-95 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 group-hover/tooltip:scale-100 transition-all duration-200 z-99999 whitespace-nowrap bg-void-black/95 border border-acid-green/40 py-1.5 px-3">
+                <div className="absolute top-0 right-4 w-2 h-2 bg-void-black border-t border-l border-acid-green/40 translate-y-[-5px] rotate-45"></div>
                 <span className="font-mono text-[9px] text-acid-green font-bold tracking-widest uppercase">
                   {hudEnabled ? "HUD_VISIBLE" : "HUD_HIDDEN"}
                 </span>
@@ -621,7 +621,7 @@ export default function SpaceshipCursor() {
 
       {/* Spaceship */}
       <motion.div
-        className="fixed top-0 left-0 z-[10000] pointer-events-none"
+        className="fixed top-0 left-0 z-10000 pointer-events-none"
         style={{
           x,
           y,

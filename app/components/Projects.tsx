@@ -1,7 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import projects from "@/app/projects/projects";
+import Tape from "@/app/components/ui/Tape";
+import Button from "@/app/components/ui/Button";
+import Modal from "@/app/components/ui/Modal";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 // --- 2. UI LABELS TRANSLATION ---
 const UI_TEXT = {
@@ -23,15 +27,7 @@ export default function ProjectShowcase() {
   const [selectedProject, setSelectedProject] = useState<
     (typeof projects)[0] | null
   >(null);
-  const [language, setLanguage] = useState<"en" | "id">("en"); // Default English
-
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedProject(null);
-    };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, []);
+  const { language, setLanguage } = useLanguage();
 
   const t = UI_TEXT[language];
 
@@ -40,9 +36,10 @@ export default function ProjectShowcase() {
       id="projects"
       className="px-4 md:pt-50 py-10 md:py-20 bg-void-black relative overflow-hidden"
     >
-      <div className="absolute inset-0 opacity-5 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]"></div>
+      <div className="noise-overlay absolute! opacity-5"></div>
 
       <h2 className="text-center font-glitch text-4xl md:text-8xl mb-18 md:mb-24 relative inline-block w-full">
+        <span className="sr-only">Full Stack Web Development Projects - </span>
         <span className="relative z-10 text-dirty-white">VISUAL_NOISE</span>
         <span className="absolute top-2 left-1/2 -translate-x-1/2 text-hot-pink z-5 opacity-70 blur-sm select-none">
           VISUAL_NOISE
@@ -118,22 +115,22 @@ export default function ProjectShowcase() {
         ))}
       </div>
 
-      {selectedProject && (
-        <div className="fixed inset-0 z-99999 flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-void-black/95 backdrop-blur-md cursor-pointer animate-in fade-in duration-300"
-            onClick={() => setSelectedProject(null)}
-          >
-            <div className="noise-overlay opacity-10"></div>
-          </div>
-
-          <div className="relative w-full max-w-4xl bg-void-black border-2 border-dirty-white shadow-[10px_10px_0px_var(--color-acid-green)] animate-in zoom-in-95 duration-300 flex flex-col md:flex-row max-h-[90vh]">
+      <Modal
+        isOpen={selectedProject !== null}
+        onClose={() => setSelectedProject(null)}
+        showCloseButton={false}
+        noiseOpacity="opacity-10"
+        containerClassName="w-full max-w-4xl shadow-[10px_10px_0px_var(--color-acid-green)] flex flex-col md:flex-row !p-0"
+      >
+        {selectedProject && (
+          <>
             <div className="absolute top-6 right-20 z-50">
-              <button
+              <Button
+                variant="retro"
                 onClick={() =>
                   setLanguage((prev) => (prev === "en" ? "id" : "en"))
                 }
-                className="font-mono text-xs font-bold text-dirty-white hover:text-acid-green transition-colors border border-dirty-white/30 px-3 py-2 bg-void-black/50 backdrop-blur-sm cursor-pointer"
+                className="text-xs px-3 py-2 bg-void-black/50 backdrop-blur-sm"
               >
                 [{" "}
                 <span
@@ -156,15 +153,15 @@ export default function ProjectShowcase() {
                   ID
                 </span>{" "}
                 ]
-              </button>
+              </Button>
             </div>
 
-            <div className="tape -top-4 right-10 rotate-3"></div>
+            <Tape className="-top-4 right-10 rotate-3" />
 
             <div
               className={`w-full md:w-1/3 ${selectedProject.theme} p-8 flex flex-col justify-between relative overflow-hidden`}
             >
-              <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')] mix-blend-multiply"></div>
+              <div className="noise-overlay absolute! opacity-20 mix-blend-multiply"></div>
 
               <span className="font-glitch text-8xl text-void-black opacity-30 absolute -top-4 -left-4">
                 {selectedProject.number}
@@ -217,25 +214,27 @@ export default function ProjectShowcase() {
               </div>
 
               <div className="mt-auto grid grid-cols-2 gap-4">
-                <button
+                <Button
                   disabled={!selectedProject.links.demo}
                   onClick={() => window.open(selectedProject.links.demo)}
-                  className="glitch-btn hover:text-(--electric-blue) hover:cursor-cell py-3 text-sm tracking-widest"
+                  variant="glitch"
+                  className="py-3 text-sm tracking-widest hover:text-(--electric-blue)"
                 >
                   {t.live_demo}
-                </button>
-                <button
+                </Button>
+                <Button
                   disabled={!selectedProject.links.github}
                   onClick={() => window.open(selectedProject.links.github)}
-                  className="border-2 border-dirty-white text-dirty-white hover:bg-dirty-white hover:text-void-black hover:cursor-cell py-3 text-sm font-bold uppercase transition-colors tracking-widest"
+                  variant="brutalist"
+                  className="py-3 text-sm"
                 >
                   {t.github_repo}
-                </button>
+                </Button>
               </div>
 
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 text-dirty-white hover:text-hot-pink transition-colors p-2"
+                className="absolute top-4 right-4 text-dirty-white hover:text-hot-pink transition-colors p-2 cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -253,9 +252,9 @@ export default function ProjectShowcase() {
                 </svg>
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </Modal>
     </section>
   );
 }

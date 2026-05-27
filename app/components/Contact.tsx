@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Marquee from "./Marquee";
+import Tape from "@/app/components/ui/Tape";
+import Button from "@/app/components/ui/Button";
 
 export default function Contact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,13 +61,12 @@ export default function Contact() {
                 </div>
 
                 <div className="relative bg-void-black border-2 border-dirty-white p-6 md:p-8 shadow-[10px_10px_0px_var(--color-electric-blue)] z-10">
-                    {/* Tape Decoration */}
-                    <div className="tape -top-3 left-1/2 -translate-x-1/2 scale-75"></div>
-                    <div className="tape bottom-3 -right-3 rotate-45 bg-hot-pink/50 scale-75"></div>
+                    <Tape className="-top-3 left-1/2 -translate-x-1/2 scale-75" />
+                    <Tape className="bottom-3 -right-3 rotate-45 bg-hot-pink/50 scale-75" />
 
                     <div className="mb-6 text-center flex flex-col items-center">
                         <h2 className="font-glitch text-2xl md:text-5xl text-dirty-white mb-1">
-                            DROP_A_<span className="text-acid-green">SIGNAL</span>
+                            <span className="sr-only">Contact Misbakhul Munir - </span>DROP_A_<span className="text-acid-green">SIGNAL</span>
                         </h2>
                         <p className="font-mono text-xs md:text-sm text-dirty-white/70 mb-3">
                             {`// Interested in collaboration? Send encrypted data.`}
@@ -153,13 +154,14 @@ export default function Contact() {
 
 
 
-                        <button
+                        <Button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full glitch-btn py-3 text-sm md:text-base font-bold tracking-[0.2em] mt-6 hover:cursor-cell"
+                            variant="glitch"
+                            className="w-full py-3 text-sm md:text-base font-bold tracking-[0.2em] mt-6"
                         >
                             {isSubmitting ? "TRANSMITTING..." : "SEND_DATA"}
-                        </button>
+                        </Button>
 
                         {isSuccess && (
                             <div className="p-3 border border-acid-green bg-acid-green/10 text-acid-green font-mono text-xs text-center animate-in fade-in slide-in-from-bottom-2">

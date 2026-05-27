@@ -6,7 +6,8 @@ export default function HeroSection() {
     }
     return (
         <section id="#" className="min-h-[calc(100dvh-4rem)] flex flex-col justify-center items-center text-center px-4 relative overflow-hidden bg-(--void-black)">
-            <h1 className="font-glitch text-8xl md:text-[13rem] leading-[0.85] mb-8 hero-text select-none z-70 text-(--dirty-white)">
+            <h1 className="sr-only">Misbakhul Munir | Full Stack Web Developer & Software Engineer</h1>
+            <div aria-hidden="true" className="font-glitch text-8xl md:text-[13rem] leading-[0.85] mb-8 hero-text select-none z-70 text-(--dirty-white)">
                 FULL<br />
                 <span className="text-(--acid-green) relative inline-block transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                     STACK
@@ -14,7 +15,7 @@ export default function HeroSection() {
                         <path d="M0 20 Q 50 40 100 20 T 200 30" stroke="var(--neon-purple)" strokeWidth="8" fill="none" strokeLinecap="round" />
                     </svg>
                 </span>
-            </h1>
+            </div>
 
             <p className="font-marker text-2xl md:text-4xl max-w-3xl transform rotate-2 z-70">
                 <span className="stabilo-highlight">Architecting the Void.</span> 

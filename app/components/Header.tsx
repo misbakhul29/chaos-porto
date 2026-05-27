@@ -33,7 +33,7 @@ export default function Header() {
         },
         {
             name: "About",
-            href: isHomePage ? "#about" : "/#about",
+            href: "/about",
             className: "hover:text-hot-pink rotate-3 hover:-rotate-3",
             mobileColor: "text-hot-pink"
         },
@@ -68,9 +68,9 @@ export default function Header() {
 
     return (
         <>
-            <header className="sticky top-0 left-0 w-full h-20 flex items-center justify-center z-[9999] mix-blend-difference text-dirty-white">
+            <header className="sticky top-0 left-0 w-full h-20 flex items-center justify-center z-9999 mix-blend-difference text-dirty-white">
                 <div className="container mx-auto max-w-7xl flex items-center justify-between px-6">
-                    
+
                     <MarkerTitle firstTitle={firstTitle} secondTitle={secondTitle} />
 
                     <nav className="hidden md:flex gap-8 items-center justify-end font-marker text-xl">
@@ -86,7 +86,7 @@ export default function Header() {
                         ))}
                     </nav>
 
-                    <button 
+                    <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="md:hidden relative group p-2"
                         aria-label="Toggle Menu"
@@ -99,15 +99,15 @@ export default function Header() {
                 </div>
             </header>
 
-            <div 
+            <div
                 className={`
                     fixed inset-0 z-9998 bg-void-black flex flex-col items-center justify-center
                     transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]
                     ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}
                 `}
             >
-                <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]"></div>
-                
+                <div className="noise-overlay absolute! opacity-10"></div>
+
                 <div className="absolute top-24 left-1/2 -translate-x-1/2 w-40 h-8 bg-white/10 -rotate-2 backdrop-blur-sm border border-white/20"></div>
 
                 <nav className="flex flex-col gap-8 text-center relative z-10">
@@ -123,17 +123,17 @@ export default function Header() {
                             `}
                         >
                             <span className={`absolute -inset-1 ${item.mobileColor} opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-200`}></span>
-                            <span className="group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-dirty-white group-hover:to-dirty-white/50 transition-colors">
+                            <span className="group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-dirty-white group-hover:to-dirty-white/50 transition-colors">
                                 {item.name}
                             </span>
-                            
+
                             <span className={`absolute left-0 top-1/2 w-0 h-2 ${item.mobileColor.replace('text-', 'bg-')} -translate-y-1/2 transition-all duration-300 group-hover:w-full opacity-70 mix-blend-exclusion -rotate-1`}></span>
                         </Link>
                     ))}
                 </nav>
 
                 <div className="absolute bottom-10 font-mono text-xs text-dirty-white/30 text-center">
-                    [ SYSTEM_NAV_V1.0 ]<br/>
+                    [ SYSTEM_NAV_V1.0 ]<br />
                     TAP LINK TO NAVIGATE
                 </div>
             </div>

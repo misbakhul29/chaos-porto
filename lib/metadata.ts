@@ -1,9 +1,23 @@
 import { Metadata } from "next";
 
 export const data: Metadata = {
-    title: "Misbakhul Munir - Fullstack Web Developer",
-    description: "Hello World, My Name Is Misbakhul Munir and I am a Web Developer based in Central Java, Indonesia.",
-    keywords: ["portfolio", "Misbakhul Munir", "web development", "next.js", "fullstack", "indonesia", "typescript", "react", "frontend", "backend", "postgres", "ui ux"],
+    title: "Misbakhul Munir | Full Stack Web Developer & Software Engineer",
+    description: "Misbakhul Munir is a professional Full Stack Web Developer and Software Engineer specializing in Next.js, React, TypeScript, Golang, and Docker.",
+    keywords: [
+        "Full Stack Web Developer",
+        "Fullstack Web Developer",
+        "Software Engineer",
+        "Web Developer Indonesia",
+        "Golang Developer",
+        "Next.js Developer",
+        "React Developer",
+        "TypeScript Developer",
+        "Misbakhul Munir",
+        "Misbakhul Munir Portfolio",
+        "Central Java Web Developer",
+        "VPS Deployment",
+        "Docker"
+    ],
     authors: [{ name: "Misbakhul Munir", url: "https://github.com/misbakhul29" }],
     applicationName: "Misbakhul Munir Portfolio",
     creator: "Misbakhul Munir",
@@ -32,7 +46,7 @@ export const data: Metadata = {
         card: "summary_large_image",
         site: "@hazart29",
         creator: "@hazart29",
-        description: "A portfolio website for Misbakhul Munir",
+        description: "Misbakhul Munir is a professional Full Stack Web Developer and Software Engineer specializing in Next.js, React, TypeScript, Golang, and Docker.",
         images: [
             {
                 url: "/twitter-image.png",
@@ -41,15 +55,15 @@ export const data: Metadata = {
                 alt: "Misbakhul Munir Portfolio",
             },
         ],
-        title: "Misbakhul Munir Portfolio",
+        title: "Misbakhul Munir | Full Stack Web Developer & Software Engineer",
     },
     verification: {
         google: "DnuLiQzxtqwvcHEh4T5CTTlk7DN1ayrC-45559AHQdE",
         yandex: "a5a5cb66b2a62ac4",
     },
     openGraph: {
-        title: "Misbakhul Munir | Fullstack Web Developer",
-        description: "Hello World, My Name Is Misbakhul Munir and I am a Web Developer based in Central Java, Indonesia.",
+        title: "Misbakhul Munir | Full Stack Web Developer & Software Engineer",
+        description: "Misbakhul Munir is a professional Full Stack Web Developer and Software Engineer specializing in Next.js, React, TypeScript, Golang, and Docker.",
         url: "https://misbakhul.com/",
         siteName: "Misbakhul Munir Portfolio",
         images: [

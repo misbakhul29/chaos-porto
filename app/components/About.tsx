@@ -1,7 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Marquee from "./Marquee";
+import Tape from "@/app/components/ui/Tape";
+import Button from "@/app/components/ui/Button";
+import Modal from "@/app/components/ui/Modal";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 const FLOW_DATA = [
     {
@@ -90,15 +94,7 @@ const BIO_TEXT = {
 
 export default function About() {
     const [activeModal, setActiveModal] = useState<typeof FLOW_DATA[0] | null>(null);
-    const [language, setLanguage] = useState<"en" | "id">("en");
-
-    useEffect(() => {
-        const handleEsc = (e: KeyboardEvent) => {
-            if (e.key === "Escape") setActiveModal(null);
-        };
-        window.addEventListener("keydown", handleEsc);
-        return () => window.removeEventListener("keydown", handleEsc);
-    }, []);
+    const { language, setLanguage } = useLanguage();
 
     const t = BIO_TEXT[language];
 
@@ -108,24 +104,25 @@ export default function About() {
 
             <section className="max-w-7xl w-full mx-auto px-6 relative mt-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-                    
+
                     <div className="relative group">
                         <div className="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-full h-full border-4 border-hot-pink z-0 transform -rotate-3 transition-transform duration-300 group-hover:rotate-0"></div>
 
                         <div className="bg-void-black border-4 border-dirty-white p-6 md:p-8 relative z-10 transform rotate-2 transition-transform duration-300 group-hover:rotate-0">
-                            <div className="tape"></div>
+                            <Tape />
 
                             <div className="absolute top-3 right-3 md:top-4 md:right-4 z-50">
-                                <button
+                                <Button
+                                    variant="retro"
                                     onClick={() => setLanguage(prev => prev === "en" ? "id" : "en")}
-                                    className="font-mono text-[10px] md:text-xs font-bold text-dirty-white hover:text-acid-green transition-colors border border-dirty-white/30 px-2 py-1 bg-void-black cursor-pointer"
+                                    className="text-[10px] md:text-xs px-2 py-1"
                                 >
                                     [ <span className={language === "en" ? "text-acid-green" : "text-dirty-white/50"}>EN</span> / <span className={language === "id" ? "text-acid-green" : "text-dirty-white/50"}>ID</span> ]
-                                </button>
+                                </Button>
                             </div>
 
                             <h2 className="font-glitch text-4xl md:text-6xl mb-6 text-acid-green leading-[0.9]">
-                                THE<br />ARCHITECT
+                                <span className="sr-only">About Misbakhul Munir - </span>THE<br />ARCHITECT
                             </h2>
 
                             <p className="text-xs md:text-lg leading-relaxed mb-6 font-bold text-dirty-white">
@@ -162,7 +159,7 @@ export default function About() {
 
                                     <h3
                                         className={`
-                                            text-4xl sm:text-5xl md:text-7xl font-bold leading-tight uppercase transition-all duration-200
+                                            text-4xl sm:text-5xl md:text-7xl leading-tight uppercase transition-all duration-200
                                             font-(--font-space-grotesk)
                                             ${item.colorClass}
                                             ${item.isStroke
@@ -179,23 +176,14 @@ export default function About() {
                     </div>
                 </div>
 
-                {activeModal && (
-                    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
-                        <div
-                            className="absolute inset-0 bg-void-black/90 backdrop-blur-md cursor-pointer animate-in fade-in duration-300"
-                            onClick={() => setActiveModal(null)}
-                        >
-                            <div className="noise-overlay opacity-20"></div>
-                        </div>
-
-                        <div className={`
-                            relative w-[95%] md:w-full max-w-lg bg-void-black 
-                            border-4 ${activeModal.borderColor} 
-                            p-6 md:p-12 
-                            transform rotate-1 shadow-[10px_10px_0px_rgba(0,0,0,0.5)] md:shadow-[15px_15px_0px_rgba(0,0,0,0.5)]
-                            animate-in zoom-in-95 fade-in duration-200
-                            max-h-[85vh] overflow-y-auto
-                        `}>
+                <Modal
+                    isOpen={activeModal !== null}
+                    onClose={() => setActiveModal(null)}
+                    showCloseButton={false}
+                    containerClassName={`w-[95%] md:w-full max-w-lg border-4 ${activeModal?.borderColor || "border-dirty-white"} md:p-12 transform rotate-1 shadow-[10px_10px_0px_rgba(0,0,0,0.5)] md:shadow-[15px_15px_0px_rgba(0,0,0,0.5)]`}
+                >
+                    {activeModal && (
+                        <>
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 md:w-32 h-6 md:h-8 bg-white/10 -rotate-2 backdrop-blur-sm border border-white/20"></div>
 
                             <div className="absolute top-4 right-4 text-[10px] font-mono opacity-50 tracking-widest text-dirty-white">
@@ -221,20 +209,16 @@ export default function About() {
                                 ))}
                             </div>
 
-                            <button
+                            <Button
+                                variant="outline"
                                 onClick={() => setActiveModal(null)}
-                                className={`
-                                    w-full py-3 md:py-4 font-black uppercase text-lg md:text-xl tracking-[0.2em]
-                                    border-2 ${activeModal.borderColor} text-dirty-white
-                                    hover:bg-dirty-white hover:text-void-black transition-colors duration-200
-                                    cursor-pointer
-                                `}
+                                className={`w-full py-3 md:py-4 font-black text-lg md:text-xl tracking-[0.2em] hover:bg-dirty-white hover:text-void-black ${activeModal.borderColor}`}
                             >
                                 [ CLOSE_PROCESS ]
-                            </button>
-                        </div>
-                    </div>
-                )}
+                            </Button>
+                        </>
+                    )}
+                </Modal>
             </section>
         </div>
     );
