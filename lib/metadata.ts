@@ -23,7 +23,7 @@ export const data: Metadata = {
     abstract: "A portfolio website for Misbakhul Munir with Next.js",
     category: "Portfolio",
     classification: "Portfolio",
-    metadataBase: new URL("https://misbakhul.my.id/"),
+    metadataBase: new URL("https://misbakhul.com/"),
     robots: {
         index: true,
         follow: true,
@@ -50,7 +50,7 @@ export const data: Metadata = {
     openGraph: {
         title: "Misbakhul Munir | Fullstack Web Developer",
         description: "Hello World, My Name Is Misbakhul Munir and I am a Web Developer based in Central Java, Indonesia.",
-        url: "https://misbakhul.my.id/",
+        url: "https://misbakhul.com/",
         siteName: "Misbakhul Munir Portfolio",
         images: [
             {
@@ -70,6 +70,6 @@ export const data: Metadata = {
         richPin: true
     },
     alternates: {
-        canonical: "https://misbakhul.my.id/",
+        canonical: "https://misbakhul.com/",
     },
 };

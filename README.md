@@ -25,5 +25,5 @@ I build scalable web applications with a focus on type safety, containerization,
 ### 📫 Connect
 
 * [LinkedIn](https://www.linkedin.com/in/misbakhul2904)
-* [Portfolio](https://misbakhul.my.id)
+* [Portfolio](https://misbakhul.com)
 * [Email](mailto:misbakhul2904@gmail.com)

@@ -1,8 +1,8 @@
 import { data as metadata } from "@/lib/metadata";
 
 export default function Schema() {
-    const baseUrl = metadata.metadataBase ? metadata.metadataBase.toString().replace(/\/$/, "") : "https://misbakhul.my.id";
-    
+    const baseUrl = metadata.metadataBase ? metadata.metadataBase.toString().replace(/\/$/, "") : "https://misbakhul.com";
+
     const personSchema = {
         "@context": "https://schema.org",
         "@type": "Person",
