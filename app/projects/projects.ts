@@ -72,6 +72,21 @@ const projects: Project[] = [
     description_en: "Modern, secure, and high-performance RESTful API built with Go & Huma v2. Featuring Clean Architecture, Redis caching (Lazy Loading & Active Invalidation), and client IP rate limiting.",
     tech: ["Golang", "Huma v2", "Redis", "PostgreSQL", "GORM", "Docker"],
     links: { demo: "https://api.go.misbakhul.my.id/docs", github: "https://github.com/misbakhul29/learn-golang-api" }
+  },
+  {
+    id: 5,
+    number: "05",
+    title: "AUTO_ARTICLE",
+    category: "#AUTOMATION",
+    year: "2026",
+    theme: "bg-electric-blue",
+    text: "text-void-black",
+    rotateClass: "md:mt-8 md:-rotate-2",
+    hasPattern: true,
+    description_id: "Sistem auto post artikel yang ditenagai Hugo dan cron job Golang. Menghasilkan artikel setiap 12 jam menggunakan model AI openai/gpt-oss-120b:free (peringkat #15 SEO) dan web scraper Golang untuk mengumpulkan gambar.",
+    description_en: "Automated article posting system powered by Hugo and a Golang cron job. Generates articles every 12 hours using the openai/gpt-oss-120b:free AI model (ranked #15 SEO) and a Golang web scraper to collect images.",
+    tech: ["Hugo", "Golang", "AI", "Scraper"],
+    links: { demo: "https://article.misbakhul.com", github: "" }
   }
 ];
 

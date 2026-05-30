@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useTransition } from "react";
-import Link from "next/link";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import projects from "@/app/projects/projects";
@@ -15,17 +14,12 @@ import {
   Grid,
   List,
   Search,
-  ExternalLink,
   Github,
-  Cpu,
-  Layers,
   Activity,
-  ChevronRight,
   Filter,
   Volume2,
   VolumeX,
   Clock,
-  Sparkles,
   X,
   Calendar,
   Globe,
@@ -122,8 +116,6 @@ export default function ProjectsPageClient() {
 
   const [cliInput, setCliInput] = useState<string>("");
   const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
-
-  const [, startTransition] = useTransition();
 
   const terminalEndRef = useRef<HTMLDivElement | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);

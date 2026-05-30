@@ -396,6 +396,7 @@ export default function SpaceshipCursor() {
             <div className="relative group/tooltip">
               <button
                 onClick={toggleMusic}
+                aria-label="Toggle Music"
                 className="group relative flex items-center justify-center w-10 h-10 border border-dirty-white/30 hover:border-acid-green transition-all duration-300 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-acid-green/0 group-hover:bg-acid-green/10 transition-colors"></div>
