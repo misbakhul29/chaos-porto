@@ -4,7 +4,7 @@ export default function robots(): MetadataRoute.Robots {
     return {
         rules: {
             userAgent: "*",
-            allow: "/",
+            allow: ["/", "/about", "/projects"],
         },
         sitemap: "https://www.misbakhul.com/sitemap.xml",
     };

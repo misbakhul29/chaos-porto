@@ -37,7 +37,7 @@ export const data: Metadata = {
     abstract: "A portfolio website for Misbakhul Munir with Next.js",
     category: "Portfolio",
     classification: "Portfolio",
-    metadataBase: new URL("https://www.misbakhul.com/"),
+    metadataBase: new URL("https://www.misbakhul.com"),
     robots: {
         index: true,
         follow: true,
@@ -64,7 +64,7 @@ export const data: Metadata = {
     openGraph: {
         title: "Misbakhul Munir | Full Stack Web Developer & Software Engineer",
         description: "Misbakhul Munir is a professional Full Stack Web Developer and Software Engineer specializing in Next.js, React, TypeScript, Golang, and Docker.",
-        url: "https://www.misbakhul.com/",
+        url: "https://www.misbakhul.com",
         siteName: "Misbakhul Munir Portfolio",
         images: [
             {
@@ -84,6 +84,6 @@ export const data: Metadata = {
         richPin: true
     },
     alternates: {
-        canonical: "https://www.misbakhul.com/",
+        canonical: "https://www.misbakhul.com",
     },
 };
