@@ -35,6 +35,7 @@ import Schema from "./components/Schema";
 import SpaceshipCursor from "./components/SpaceshipCursor";
 import { LanguageProvider } from "@/app/context/LanguageContext";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = data;
 
@@ -50,6 +51,7 @@ export default function RootLayout({
       >
         <LanguageProvider>
           <Analytics />
+          <SpeedInsights />
           <Schema />
           <SpaceshipCursor />
           <GravityStarsBackground className="fixed z-10 bg-[--void-black]" />
