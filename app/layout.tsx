@@ -34,6 +34,7 @@ const spaceGrostek = Space_Grotesk({
 import Schema from "./components/Schema";
 import SpaceshipCursor from "./components/SpaceshipCursor";
 import { LanguageProvider } from "@/app/context/LanguageContext";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = data;
 
@@ -48,6 +49,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${fontGlitch.variable} ${permanentMarker.variable} ${spaceGrostek.variable} antialiased`}
       >
         <LanguageProvider>
+          <Analytics />
           <Schema />
           <SpaceshipCursor />
           <GravityStarsBackground className="fixed z-10 bg-[--void-black]" />
