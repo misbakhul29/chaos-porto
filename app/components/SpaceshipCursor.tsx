@@ -74,6 +74,28 @@ export default function SpaceshipCursor() {
   const lastKillTime = useRef<number>(0);
   const comboTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const bgmRef = useRef<HTMLAudioElement | null>(null);
+  const activeTimeouts = useRef(new Set<NodeJS.Timeout>());
+  const shootSoundsRef = useRef<HTMLAudioElement[]>([]);
+  const currentAudioIndex = useRef(0);
+
+  useEffect(() => {
+    if (typeof Audio !== "undefined") {
+      const audioPoolSize = 5;
+      for (let i = 0; i < audioPoolSize; i++) {
+        const audio = new Audio("/sounds/35686__jobro__laser9.wav");
+        audio.volume = 0.2;
+        shootSoundsRef.current.push(audio);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (comboTimeoutRef.current) clearTimeout(comboTimeoutRef.current);
+      activeTimeouts.current.forEach(clearTimeout);
+      activeTimeouts.current.clear();
+    };
+  }, []);
 
   useEffect(() => {
     bgmRef.current = new Audio(
@@ -124,10 +146,11 @@ export default function SpaceshipCursor() {
           ...p,
           { id: popupId, x: enemyX, y: enemyY, text: `+${nextCombo} COMBO` },
         ]);
-        setTimeout(
-          () => setComboPopups((p) => p.filter((item) => item.id !== popupId)),
-          800,
-        );
+        const timeout = setTimeout(() => {
+          setComboPopups((p) => p.filter((item) => item.id !== popupId));
+          activeTimeouts.current.delete(timeout);
+        }, 800);
+        activeTimeouts.current.add(timeout);
       }
       return nextCombo;
     });
@@ -247,10 +270,11 @@ export default function SpaceshipCursor() {
   const createExplosion = (x: number, y: number, color: string) => {
     const id = Math.random();
     setExplosions((prev) => [...prev, { id, x, y, color }]);
-    setTimeout(
-      () => setExplosions((prev) => prev.filter((exp) => exp.id !== id)),
-      500,
-    );
+    const timeout = setTimeout(() => {
+      setExplosions((prev) => prev.filter((exp) => exp.id !== id));
+      activeTimeouts.current.delete(timeout);
+    }, 500);
+    activeTimeouts.current.add(timeout);
   };
 
   const spawnEntity = useCallback(() => {
@@ -315,10 +339,6 @@ export default function SpaceshipCursor() {
       lastPos.current = { x: e.clientX, y: e.clientY };
     };
 
-    const shootSound =
-      typeof Audio !== "undefined"
-        ? new Audio("/sounds/35686__jobro__laser9.wav")
-        : null;
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target && target.closest(".pointer-events-auto")) {
@@ -329,10 +349,11 @@ export default function SpaceshipCursor() {
           triggerUltimate();
           return;
         }
-        if (shootSound) {
-          const s = shootSound.cloneNode() as HTMLAudioElement;
-          s.volume = 0.2;
+        if (shootSoundsRef.current.length > 0) {
+          const s = shootSoundsRef.current[currentAudioIndex.current];
+          s.currentTime = 0;
           s.play().catch(() => { });
+          currentAudioIndex.current = (currentAudioIndex.current + 1) % shootSoundsRef.current.length;
         }
         const rad = (shipRotation * Math.PI) / 180;
         setProjectiles((prev) => [

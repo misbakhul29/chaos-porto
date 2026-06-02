@@ -15,16 +15,24 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>("en");
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("portfolio_lang") as Language;
-    if (savedLanguage === "en" || savedLanguage === "id") {
-      setLanguage(savedLanguage);
+    try {
+      const savedLanguage = localStorage.getItem("portfolio_lang") as Language;
+      if (savedLanguage === "en" || savedLanguage === "id") {
+        setLanguage(savedLanguage);
+      }
+    } catch {
+      // Ignore
     }
   }, []);
 
   const handleSetLanguage = (lang: Language | ((prev: Language) => Language)) => {
     setLanguage((prev) => {
       const nextLang = typeof lang === "function" ? lang(prev) : lang;
-      localStorage.setItem("portfolio_lang", nextLang);
+      try {
+        localStorage.setItem("portfolio_lang", nextLang);
+      } catch {
+        // Ignore
+      }
       return nextLang;
     });
   };

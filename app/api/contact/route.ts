@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { apiRateLimiter } from "@/lib/rate-limiter";
 
 interface ContactPayload {
     name: string;
@@ -8,6 +9,14 @@ interface ContactPayload {
 
 export async function POST(request: Request) {
     try {
+        const ip = request.headers.get("x-forwarded-for") || "unknown";
+        if (!apiRateLimiter.check(ip)) {
+            return NextResponse.json(
+                { success: false, message: "Too many requests" },
+                { status: 429 }
+            );
+        }
+
         const { SMTP_API_URL, SMTP_API_KEY } = process.env;
 
         if (!SMTP_API_URL || !SMTP_API_KEY) {

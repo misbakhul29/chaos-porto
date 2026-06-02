@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Marquee from "./Marquee";
 import Tape from "@/app/components/ui/Tape";
@@ -10,6 +10,13 @@ export default function Contact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        };
+    }, []);
 
     const {
         register,
@@ -40,7 +47,8 @@ export default function Contact() {
             if (result.success) {
                 setIsSuccess(true);
                 reset();
-                setTimeout(() => setIsSuccess(false), 5000);
+                if (timeoutRef.current) clearTimeout(timeoutRef.current);
+                timeoutRef.current = setTimeout(() => setIsSuccess(false), 5000);
             } else {
                 setIsError(true);
             }

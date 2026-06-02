@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useTransition } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import projects from "@/app/projects/projects";
