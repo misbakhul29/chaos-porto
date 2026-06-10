@@ -36,6 +36,7 @@ import SpaceshipCursor from "./components/SpaceshipCursor";
 import { LanguageProvider } from "@/app/context/LanguageContext";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import ConstellationBackground from "./components/background/ConstellationBackground";
 
 export const metadata: Metadata = data;
 
@@ -54,7 +55,7 @@ export default function RootLayout({
           <SpeedInsights />
           <Schema />
           <SpaceshipCursor />
-          <GravityStarsBackground className="fixed z-10 bg-[--void-black]" />
+          <ConstellationBackground />
           <div className="noise-overlay opacity-[0.02] z-50"></div>
 
           {children}

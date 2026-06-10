@@ -5,7 +5,7 @@ export default function HeroSection() {
         window.open("/Resume.pdf", "_blank");
     }
     return (
-        <section id="#" className="min-h-[calc(100dvh-4rem)] flex flex-col justify-center items-center text-center px-4 relative overflow-hidden bg-(--void-black)">
+        <section id="#" className="min-h-[calc(100dvh-4rem)] flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
             <h1 className="sr-only">Misbakhul Munir | Full Stack Web Developer & Software Engineer</h1>
             <div aria-hidden="true" className="font-glitch text-8xl md:text-[13rem] leading-[0.85] mb-8 hero-text select-none z-70 text-(--dirty-white)">
                 FULL<br />
@@ -18,12 +18,12 @@ export default function HeroSection() {
             </div>
 
             <p className="font-marker text-2xl md:text-4xl max-w-3xl transform rotate-2 z-70">
-                <span className="stabilo-highlight">Architecting the Void.</span> 
+                <span className="stabilo-highlight">Architecting the Void.</span>
                 <span className="stabilo-highlight stabilo-pink">Rendering the Vision.</span>
             </p>
 
             <div className="mt-16 transform -rotate-2 z-70">
-                <button onClick={() => handleDownloadResume() } className="glitch-btn px-10 py-4 text-2xl font-bold font-mono tracking-tighter hover:cursor-cell">
+                <button onClick={() => handleDownloadResume()} className="glitch-btn px-10 py-4 text-2xl font-bold font-mono tracking-tighter hover:cursor-cell">
                     Execute()
                 </button>
             </div>

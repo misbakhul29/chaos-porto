@@ -387,7 +387,7 @@ export default function ProjectsPageClient() {
   };
 
   return (
-    <div className="relative min-h-screen bg-void-black flex flex-col justify-between overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
       <div className="noise-overlay absolute! opacity-5"></div>
 
       <Header />

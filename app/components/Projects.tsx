@@ -34,7 +34,7 @@ export default function ProjectShowcase() {
   return (
     <section
       id="projects"
-      className="px-4 md:pt-50 py-10 md:py-20 bg-void-black relative overflow-hidden"
+      className="px-4 md:pt-50 py-10 md:py-20 relative overflow-hidden"
     >
       <div className="noise-overlay absolute! opacity-5"></div>
 

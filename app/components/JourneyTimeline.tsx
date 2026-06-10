@@ -93,7 +93,7 @@ export default function JourneyTimeline() {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <section className="min-h-screen pt-32 pb-24 px-4 relative overflow-hidden bg-void-black flex flex-col justify-center">
+    <section className="min-h-screen pt-32 pb-24 px-4 relative overflow-hidden flex flex-col justify-center">
       <div className="noise-overlay absolute! opacity-5"></div>
 
       <div className="container mx-auto max-w-4xl relative z-20">
