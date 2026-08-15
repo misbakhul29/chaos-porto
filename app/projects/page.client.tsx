@@ -359,6 +359,15 @@ export default function ProjectsPageClient() {
     const matchesYear = !selectedYear || project.year === selectedYear;
 
     return matchesSearch && matchesTech && matchesCategory && matchesYear;
+  }).sort((a, b) => {
+    // Sort by year descending
+    const yearA = parseInt(a.year) || 0;
+    const yearB = parseInt(b.year) || 0;
+    if (yearB !== yearA) {
+      return yearB - yearA;
+    }
+    // If year is the same, sort by ID descending (or number descending)
+    return b.id - a.id;
   });
 
   const toggleTechFilter = (tech: string) => {
