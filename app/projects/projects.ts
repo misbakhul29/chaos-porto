@@ -87,6 +87,21 @@ const projects: Project[] = [
     description_en: "Automated article posting system powered by Hugo and a Golang cron job. Generates articles every 12 hours using the openai/gpt-oss-120b:free AI model (ranked #15 SEO) and a Golang web scraper to collect images.",
     tech: ["Hugo", "Golang", "AI", "Scraper"],
     links: { demo: "https://article.misbakhul.com", github: "" }
+  },
+  {
+    id: 6,
+    number: "06",
+    title: "CHI_OPENAPI",
+    category: "#GO_API",
+    year: "2026",
+    theme: "bg-neon-purple",
+    text: "text-void-black",
+    rotateClass: "md:mt-10 md:rotate-2",
+    hasPattern: true,
+    description_id: "Template backend Go siap produksi menggunakan Chi Router dan OpenAPI (oapi-codegen). Dilengkapi dynamic spec-driven security, rate limiting otomatis, session management terintegrasi database, dan audit logging.",
+    description_en: "Production-ready Go backend template using Chi Router and OpenAPI (oapi-codegen). Features dynamic spec-driven security, automatic rate limiting, DB-backed session validation, and audit logging.",
+    tech: ["Golang", "Chi Router", "OpenAPI", "GORM", "PostgreSQL", "JWT"],
+    links: { demo: "", github: "https://github.com/misbakhul29/go-backend-chi-openapi" }
   }
 ];
 
