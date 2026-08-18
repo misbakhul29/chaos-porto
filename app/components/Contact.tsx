@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import Button from "@/app/components/ui/Button";
+import Tape from "@/app/components/ui/Tape";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Marquee from "./Marquee";
-import Tape from "@/app/components/ui/Tape";
-import Button from "@/app/components/ui/Button";
 
 export default function Contact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +32,7 @@ export default function Contact() {
         const payload = data as Record<string, unknown>;
 
         try {
-            const res = await fetch("/api/contact", {
+            const res = await fetch("/api/resend", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -82,7 +82,7 @@ export default function Contact() {
                         <div className="inline-block border border-hot-pink/30 bg-hot-pink/10 px-2 py-1 w-fit">
                             <p className="font-mono text-[10px] text-hot-pink flex items-center gap-1 justify-center">
                                 <span className="animate-pulse">⚡</span>
-                                POWERED BY <a href="https://smtp.misbakhul.my.id/" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors cursor-cell">GOLANG_SMTP API</a>
+                                POWERED BY <a href="https://resend.com/" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors cursor-cell">RESEND API</a>
                             </p>
                         </div>
                     </div>
