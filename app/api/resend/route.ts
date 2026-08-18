@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 
         const { error: sendError } = await resend.emails.send({
             from: email,
-            to: "misbakhul2904@gmail.com",
+            to: "admin@misbakhul.com",
             subject: `[Chaos Portfolio] New message from ${name}`,
             html: `<!DOCTYPE html>
 <html lang="en">
