@@ -86,13 +86,13 @@ export default function ProjectDetailClient({
     project.media && project.media.length > 0
       ? project.media
       : [
-          {
-            type: "image",
-            url: "/og-image.png",
-            caption_en: `${project.title} Interface Preview`,
-            caption_id: `Pratinjau Tampilan ${project.title}`,
-          },
-        ];
+        {
+          type: "image",
+          url: "/og-image.png",
+          caption_en: `${project.title} Interface Preview`,
+          caption_id: `Pratinjau Tampilan ${project.title}`,
+        },
+      ];
 
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
@@ -272,11 +272,10 @@ export default function ProjectDetailClient({
                   <button
                     key={idx}
                     onClick={() => setSelectedMediaIndex(idx)}
-                    className={`relative flex-shrink-0 w-24 h-16 border-2 transition-all overflow-hidden cursor-pointer ${
-                      selectedMediaIndex === idx
-                        ? "border-acid-green shadow-[0_0_10px_var(--color-acid-green)] scale-105"
-                        : "border-dirty-white/20 opacity-60 hover:opacity-100"
-                    }`}
+                    className={`relative shrink-0 w-24 h-16 border-2 transition-all overflow-hidden cursor-pointer ${selectedMediaIndex === idx
+                      ? "border-acid-green shadow-[0_0_10px_var(--color-acid-green)] scale-105"
+                      : "border-dirty-white/20 opacity-60 hover:opacity-100"
+                      }`}
                   >
                     <img
                       src={media.poster || media.url}
@@ -396,7 +395,7 @@ export default function ProjectDetailClient({
 
             {/* HIGHLIGHTS */}
             {highlights && highlights.length > 0 && (
-              <div className="bg-void-black border-2 border-hot-pink/40 p-6 md:p-8 bg-hot-pink/5">
+              <div className="bg-void-black border-2 border-hot-pink/40 p-6 md:p-8">
                 <div className="flex items-center gap-2 mb-4 border-b border-hot-pink/20 pb-2">
                   <ShieldCheck size={18} className="text-hot-pink" />
                   <h3 className="font-mono text-sm md:text-base font-bold text-hot-pink tracking-widest uppercase">

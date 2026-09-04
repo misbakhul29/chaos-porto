@@ -111,7 +111,7 @@ export default function JourneyTimeline() {
 
             return (
               <div key={idx} className="relative pl-8 md:pl-16 group">
-                <div className="absolute left-[-14px] top-1.5 w-6 h-6 rounded-none border-2 border-dirty-white bg-void-black flex items-center justify-center group-hover:border-acid-green transition-colors">
+                <div className="absolute -left-3.5 top-1.5 w-6 h-6 rounded-none border-2 border-dirty-white bg-void-black flex items-center justify-center group-hover:border-acid-green transition-colors">
                   <div className="w-2 h-2 bg-dirty-white group-hover:bg-acid-green transition-colors"></div>
                 </div>
 
