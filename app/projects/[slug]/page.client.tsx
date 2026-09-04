@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Tape from "@/components/ui/Tape";
@@ -115,7 +116,7 @@ export default function ProjectDetailClient({
     language === "en" ? project.highlights_en : project.highlights_id;
 
   return (
-    <div className="relative min-h-screen w-full bg-void-black text-dirty-white overflow-x-hidden flex flex-col justify-between">
+    <div className="relative min-h-screen w-full text-dirty-white overflow-x-hidden flex flex-col justify-between">
       <Header />
 
       <main className="relative z-20 pt-28 md:pt-36 pb-20 px-4 md:px-8 max-w-7xl mx-auto w-full">
@@ -236,10 +237,13 @@ export default function ProjectDetailClient({
                   className="relative w-full h-full cursor-pointer flex items-center justify-center overflow-hidden"
                   onClick={() => setIsZoomOpen(true)}
                 >
-                  <img
+                  <Image
                     src={activeMedia.url}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 1280px) 100vw, 1200px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    priority
                   />
                   <div className="absolute inset-0 bg-void-black/20 group-hover:bg-transparent transition-colors pointer-events-none" />
                   <div className="absolute bottom-4 right-4 bg-void-black/90 border border-dirty-white/40 text-dirty-white px-2.5 py-1 text-[10px] font-mono flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -277,10 +281,12 @@ export default function ProjectDetailClient({
                       : "border-dirty-white/20 opacity-60 hover:opacity-100"
                       }`}
                   >
-                    <img
+                    <Image
                       src={media.poster || media.url}
                       alt={`Thumbnail ${idx + 1}`}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="96px"
+                      className="object-cover"
                     />
                     {media.type === "video" && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -480,10 +486,12 @@ export default function ProjectDetailClient({
         containerClassName="w-[95%] max-w-5xl bg-void-black border-4 border-dirty-white p-2 shadow-[15px_15px_0_var(--color-hot-pink)]"
       >
         <div className="relative aspect-video w-full bg-black flex items-center justify-center overflow-hidden">
-          <img
+          <Image
             src={activeMedia.url}
             alt={project.title}
-            className="w-full h-full object-contain"
+            fill
+            sizes="(max-width: 1280px) 95vw, 1200px"
+            className="object-contain"
           />
         </div>
         <div className="p-3 font-mono text-xs text-dirty-white/80 flex justify-between items-center">

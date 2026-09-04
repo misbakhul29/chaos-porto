@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/Button";
 import Tape from "@/components/ui/Tape";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Marquee from "./Marquee";
 
