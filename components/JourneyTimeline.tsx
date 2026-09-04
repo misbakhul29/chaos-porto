@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import Tape from "@/app/components/ui/Tape";
-import Button from "@/app/components/ui/Button";
-import Modal from "@/app/components/ui/Modal";
-import { useLanguage } from "@/app/context/LanguageContext";
+import Tape from "@/components/ui/Tape";
+import Button from "@/components/ui/Button";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 interface JourneyItem {
   year: string;
@@ -71,23 +69,6 @@ const JOURNEY_DATA: JourneyItem[] = [
     details_en: "Beginning a professional role as a Junior Full Stack Developer, focusing on backend integration and deployment consistency.\n\n![Junior Fullstack](/og-image.png)\n\n**Key Milestones:**\n- Designing reliable REST APIs with Node.js and Golang.\n- Integrating PostgreSQL for relational database management.\n- Using Docker for test and production environment standardization."
   }
 ];
-
-function renderMarkdown(text: string | undefined): string {
-  if (!text) return "";
-  let html = text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div class="my-6 border-2 border-dirty-white shadow-[6px_6px_0px_var(--color-hot-pink)] overflow-hidden"><img src="$2" alt="$1" class="w-full h-auto object-cover" /></div>');
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="underline text-electric-blue hover:text-hot-pink font-bold">$1</a>');
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong class="text-acid-green">$1</strong>');
-  html = html.replace(/\*([^*]+)\*/g, '<em class="text-electric-blue">$1</em>');
-  html = html.replace(/- ([^\n]+)/g, '<li class="ml-4 list-disc text-dirty-white/90">$1</li>');
-  html = html.replace(/\n/g, '<br />');
-
-  return html;
-}
 
 export default function JourneyTimeline() {
   const { language, setLanguage } = useLanguage();

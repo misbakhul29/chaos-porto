@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import projects from "@/app/projects/projects";
-import Tape from "@/app/components/ui/Tape";
-import Button from "@/app/components/ui/Button";
-import Modal from "@/app/components/ui/Modal";
-import { useLanguage } from "@/app/context/LanguageContext";
+import Tape from "@/components/ui/Tape";
+import Button from "@/components/ui/Button";
+import Modal from "@/components/ui/Modal";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 // --- 2. UI LABELS TRANSLATION ---
 const UI_TEXT = {
@@ -14,12 +15,16 @@ const UI_TEXT = {
     desc_title: "PROJECT_DESCRIPTION",
     live_demo: "LIVE DEMO",
     github_repo: "GITHUB REPO",
+    full_specs: "EXPAND_FULL_PROJECT_PAGE",
+    all_projects: "VIEW_ALL_PROJECTS",
   },
   id: {
     view_project: "Lihat Proyek",
     desc_title: "DESKRIPSI_PROYEK",
     live_demo: "DEMO LANGSUNG",
     github_repo: "REPO GITHUB",
+    full_specs: "BUKA_HALAMAN_LENGKAP",
+    all_projects: "LIHAT_SEMUA_PROYEK",
   },
 };
 
@@ -113,6 +118,15 @@ export default function ProjectShowcase() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-14 text-center relative z-80">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-2 font-mono font-bold text-xs md:text-sm px-6 py-3 border-2 border-dirty-white bg-void-black text-dirty-white hover:bg-dirty-white hover:text-void-black shadow-[6px_6px_0_var(--color-hot-pink)] transition-all cursor-cell"
+        >
+          <span>[ {t.all_projects} (7) ❯ ]</span>
+        </Link>
       </div>
 
       <Modal
@@ -213,23 +227,32 @@ export default function ProjectShowcase() {
                 </div>
               </div>
 
-              <div className="mt-auto grid grid-cols-2 gap-4">
-                <Button
-                  disabled={!selectedProject.links.demo}
-                  onClick={() => window.open(selectedProject.links.demo)}
-                  variant="glitch"
-                  className="py-3 text-sm tracking-widest hover:text-(--electric-blue)"
+              <div className="mt-auto flex flex-col gap-3">
+                <Link
+                  href={`/projects/${selectedProject.slug}`}
+                  className="w-full py-2.5 text-center font-mono font-bold text-xs bg-acid-green text-void-black tracking-widest border border-acid-green hover:bg-void-black hover:text-acid-green transition-all"
                 >
-                  {t.live_demo}
-                </Button>
-                <Button
-                  disabled={!selectedProject.links.github}
-                  onClick={() => window.open(selectedProject.links.github)}
-                  variant="brutalist"
-                  className="py-3 text-sm"
-                >
-                  {t.github_repo}
-                </Button>
+                  [ {t.full_specs} ❯ ]
+                </Link>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <Button
+                    disabled={!selectedProject.links.demo}
+                    onClick={() => window.open(selectedProject.links.demo)}
+                    variant="glitch"
+                    className="py-2.5 text-xs tracking-widest hover:text-(--electric-blue)"
+                  >
+                    {t.live_demo}
+                  </Button>
+                  <Button
+                    disabled={!selectedProject.links.github}
+                    onClick={() => window.open(selectedProject.links.github)}
+                    variant="brutalist"
+                    className="py-2.5 text-xs"
+                  >
+                    {t.github_repo}
+                  </Button>
+                </div>
               </div>
 
               <button

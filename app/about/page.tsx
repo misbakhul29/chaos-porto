@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import Header from "@/app/components/Header";
-import JourneyTimeline from "@/app/components/JourneyTimeline";
-import Footer from "@/app/components/Footer";
+import Header from "@/components/Header";
+import JourneyTimeline from "@/components/JourneyTimeline";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "About Misbakhul Munir | Fullstack Web Developer",

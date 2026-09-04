@@ -32,6 +32,7 @@ interface Entity {
   rotationSpeed: number;
   health: number;
   createdAt: number;
+  opacity?: number;
 }
 
 interface Explosion {
@@ -90,10 +91,11 @@ export default function SpaceshipCursor() {
   }, []);
 
   useEffect(() => {
+    const timeouts = activeTimeouts.current;
     return () => {
       if (comboTimeoutRef.current) clearTimeout(comboTimeoutRef.current);
-      activeTimeouts.current.forEach(clearTimeout);
-      activeTimeouts.current.clear();
+      timeouts.forEach(clearTimeout);
+      timeouts.clear();
     };
   }, []);
 
@@ -129,6 +131,16 @@ export default function SpaceshipCursor() {
       return next;
     });
   };
+
+  const createExplosion = useCallback((x: number, y: number, color: string) => {
+    const id = Math.random();
+    setExplosions((prev) => [...prev, { id, x, y, color }]);
+    const timeout = setTimeout(() => {
+      setExplosions((prev) => prev.filter((exp) => exp.id !== id));
+      activeTimeouts.current.delete(timeout);
+    }, 500);
+    activeTimeouts.current.add(timeout);
+  }, []);
 
   const handleKill = useCallback((enemyX: number, enemyY: number) => {
     const now = Date.now();
@@ -203,7 +215,7 @@ export default function SpaceshipCursor() {
       ultSound.playbackRate = 0.5; // Deeper sound for ult
       ultSound.play().catch(() => { });
     }
-  }, [energy, mouseX, mouseY]);
+  }, [energy, mouseX, mouseY, createExplosion]);
 
   useAnimationFrame((time, delta) => {
     if (typeof window === "undefined") return;
@@ -224,29 +236,35 @@ export default function SpaceshipCursor() {
         ),
     );
 
+    const now = Date.now();
     setEntities((prev) =>
       prev
-        .map((e) => ({
-          ...e,
-          x: e.x + e.vx * (delta / 16),
-          y: e.y + e.vy * (delta / 16),
-          rotation: e.rotation + e.rotationSpeed * (delta / 16),
-        }))
+        .map((e) => {
+          const age = now - e.createdAt;
+          const opacity = age > 2000 ? Math.max(0, 1 - (age - 2000) / 1000) : 1;
+          return {
+            ...e,
+            opacity,
+            x: e.x + e.vx * (delta / 16),
+            y: e.y + e.vy * (delta / 16),
+            rotation: e.rotation + e.rotationSpeed * (delta / 16),
+          };
+        })
         .filter(
           (e) =>
             e.x > -200 &&
             e.x < window.innerWidth + 200 &&
             e.y > -200 &&
             e.y < window.innerHeight + 200 &&
-            Date.now() - e.createdAt < 3000,
+            now - e.createdAt < 3000,
         ),
     );
 
     setProjectiles((currentProjectiles) => {
-      let hitProjectileIds = new Set<number>();
+      const hitProjectileIds = new Set<number>();
       setEntities((currentEntities) => {
-        let newEntities = [...currentEntities];
-        let hitEntityIds = new Set<number>();
+        const newEntities = [...currentEntities];
+        const hitEntityIds = new Set<number>();
         currentProjectiles.forEach((p) => {
           newEntities.forEach((e) => {
             const dist = Math.hypot(p.x - e.x, p.y - e.y);
@@ -266,16 +284,6 @@ export default function SpaceshipCursor() {
       return currentProjectiles.filter((p) => !hitProjectileIds.has(p.id));
     });
   });
-
-  const createExplosion = (x: number, y: number, color: string) => {
-    const id = Math.random();
-    setExplosions((prev) => [...prev, { id, x, y, color }]);
-    const timeout = setTimeout(() => {
-      setExplosions((prev) => prev.filter((exp) => exp.id !== id));
-      activeTimeouts.current.delete(timeout);
-    }, 500);
-    activeTimeouts.current.add(timeout);
-  };
 
   const spawnEntity = useCallback(() => {
     if (typeof window === "undefined" || !isVisible || !spawnEnabled) return;
@@ -574,10 +582,6 @@ export default function SpaceshipCursor() {
       ))}
 
       {entities.map((e) => {
-        const opacity =
-          Date.now() - e.createdAt > 2000
-            ? Math.max(0, 1 - (Date.now() - e.createdAt - 2000) / 1000)
-            : 1;
         return (
           <div
             key={e.id}
@@ -588,7 +592,7 @@ export default function SpaceshipCursor() {
               width: e.size,
               height: e.size,
               transform: `translate(-50%, -50%) rotate(${e.rotation}deg)`,
-              opacity,
+              opacity: e.opacity ?? 1,
             }}
           >
             <svg

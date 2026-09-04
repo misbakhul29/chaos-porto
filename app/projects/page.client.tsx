@@ -1,45 +1,23 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
-import projects from "@/app/projects/projects";
+import { useRouter } from "next/navigation";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { motion, AnimatePresence } from "motion/react";
-import Tape from "@/app/components/ui/Tape";
-import Button from "@/app/components/ui/Button";
-import Modal from "@/app/components/ui/Modal";
-import { useLanguage } from "@/app/context/LanguageContext";
+import Button from "@/components/ui/Button";
+import { useLanguage } from "@/lib/context/LanguageContext";
 import {
   Terminal,
   Grid,
   List,
   Search,
-  Github,
-  Activity,
   Filter,
   Volume2,
   VolumeX,
-  Clock,
-  X,
   Calendar,
-  Globe,
 } from "lucide-react";
-
-interface Project {
-  id: number;
-  number: string;
-  title: string;
-  category: string;
-  year: string;
-  theme: string;
-  text: string;
-  rotateClass: string;
-  hasPattern?: boolean;
-  description_id: string;
-  description_en: string;
-  tech: string[];
-  links: { demo: string; github: string };
-}
+import projects from "./projects";
 
 interface CustomWindow extends Window {
   AudioContext?: typeof AudioContext;
@@ -58,53 +36,53 @@ const UI_TEXT = {
     viewList: "INVENTORY_LIST",
     allTechs: "ALL_TECHNOLOGIES",
     resetFilters: "RESET_SYSTEM_FILTERS",
-    totalFound: "ARCHIVES LOADED",
-    inspectBtn: "INSPECT_SPEC",
-    demoBtn: "EXECUTE_LIVE",
-    githubBtn: "DECRYPT_SOURCE",
-    drawerTitle: "SPECIFICATIONS_LOGGER",
-    uuidLabel: "SYSTEM_UUID",
-    yearLabel: "BUILD_YEAR",
-    statusLabel: "STATUS",
+    totalResults: "MATCHING_MODULES",
+    filterByCategory: "SEGMENT",
+    filterByYear: "TIMELINE",
+    filterByTech: "COMPONENTS",
+    cliBoot1: "AUTHENTICATING ENCRYPTED DATA CONNECTION...",
+    cliBoot2: "INDEXING SYSTEM ASSETS [OK] (7 MODULES DETECTED)",
+    cliBoot3: "TYPE 'help' FOR COMMAND DIRECTORY OR 'list' TO VIEW ALL.",
+    cliBoot4: "----------------------------------------------------",
     operational: "OPERATIONAL",
-    languagesToggle: "TOGGLE_LANG",
-    techStackHeader: "COMPILER_STACK_SPECS",
-    cliBoot1: "BOOT SEQUENCE INITIATED... STATUS: OK",
-    cliBoot2: "ESTABLISHING ENCRYPTED DATALINK WITH ARCHIVES VAULT...",
-    cliBoot3: "3 EXPERIMENT NODES INDEXED AND READY FOR FETCHING",
-    cliBoot4: "ENTER 'help' TO VIEW COMMAND INVENTORY PROTOCOLS",
+    languagesToggle: "LOCALE",
+    soundOn: "SFX_ON",
+    soundOff: "SFX_MUTED",
+    statusLabel: "SYSTEM_STATUS",
+    uuidLabel: "HEX_IDENTIFIER",
+    yearLabel: "YEAR",
   },
   id: {
-    title: "DATABASES_PROYEK",
+    title: "DATABASE_PROYEK",
     subtitle:
-      "Kumpulan lengkap layanan full-stack, visual noise, dan arsitektur client/server.",
-    terminalTitle: "SISTEM_TERMINAL_INTI v1.0.0",
+      "Repositori lengkap layanan full-stack, visual noise, dan arsitektur client/server.",
+    terminalTitle: "SISTEM_TERMINAL_UTAMA v1.0.0",
     filtersTitle: "PARAMETER_FILTER",
-    searchPlaceholder: "CMD_SEARCH> Masukkan query pencarian...",
+    searchPlaceholder: "CMD_CARI> Masukkan kata kunci...",
     viewGrid: "TAMPILAN_GRID",
     viewList: "DAFTAR_INVENTARIS",
     allTechs: "SEMUA_TEKNOLOGI",
     resetFilters: "RESET_FILTER_SISTEM",
-    totalFound: "ARSIP DIMUAT",
-    inspectBtn: "INSPEKSI_SPEK",
-    demoBtn: "JALANKAN_DEMO",
-    githubBtn: "DEKRIPSI_KODE",
-    drawerTitle: "LOG_SPESIFIKASI",
-    uuidLabel: "UUID_SISTEM",
-    yearLabel: "TAHUN_RILIS",
-    statusLabel: "STATUS",
-    operational: "BERJALAN",
-    languagesToggle: "UBAH_BAHASA",
-    techStackHeader: "SPESIFIKASI_KOMPILER_STACK",
-    cliBoot1: "SEKUEN BOOT DIJALANKAN... STATUS: OK",
-    cliBoot2: "MEMBANGUN KONEKSI ENKRIPSI DENGAN KUBAH ARSIP...",
-    cliBoot3: "3 ARSIP EKSPERIMEN TERINDEKS DAN SIAP DIRETRIEVE",
-    cliBoot4: "KETIK 'help' UNTUK MELIHAT DAFTAR PROTOKOL KOMANDO",
+    totalResults: "MODUL_DITEMUKAN",
+    filterByCategory: "SEGMEN",
+    filterByYear: "LINIMASA",
+    filterByTech: "KOMPONEN",
+    cliBoot1: "MENGAUTENTIKASI KONEKSI DATA TERENKRIPSI...",
+    cliBoot2: "MENGINDEKS ASET SISTEM [OK] (7 MODUL TERDETEKSI)",
+    cliBoot3: "KETIK 'help' UNTUK DIREKTORI PERINTAH ATAU 'list' UNTUK MELIHAT SEMUA.",
+    cliBoot4: "----------------------------------------------------",
+    operational: "OPERASIONAL",
+    languagesToggle: "BAHASA",
+    soundOn: "SFX_AKTIF",
+    soundOff: "SFX_SENYAP",
+    statusLabel: "STATUS_SISTEM",
+    uuidLabel: "IDENTIFIKASI_HEX",
+    yearLabel: "TAHUN",
   },
 };
 
 export default function ProjectsPageClient() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const router = useRouter();
   const { language, setLanguage } = useLanguage();
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -116,15 +94,17 @@ export default function ProjectsPageClient() {
 
   const [cliInput, setCliInput] = useState<string>("");
   const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
+  const [prevLanguage, setPrevLanguage] = useState<string | null>(null);
 
   const terminalEndRef = useRef<HTMLDivElement | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
 
   const t = UI_TEXT[language];
 
-  useEffect(() => {
+  if (prevLanguage !== language) {
+    setPrevLanguage(language);
     setTerminalHistory([t.cliBoot1, t.cliBoot2, t.cliBoot3, t.cliBoot4]);
-  }, [language, t.cliBoot1, t.cliBoot2, t.cliBoot3, t.cliBoot4]);
+  }
 
   useEffect(() => {
     if (terminalEndRef.current) {
@@ -136,110 +116,87 @@ export default function ProjectsPageClient() {
     return () => {
       if (audioContextRef.current) {
         audioContextRef.current.close().catch(() => { });
-        audioContextRef.current = null;
       }
     };
   }, []);
 
   const playSynthSound = (type: "click" | "success" | "beep" | "error") => {
-    if (!soundEnabled || typeof window === "undefined") {
-      return;
-    }
+    if (!soundEnabled || typeof window === "undefined") return;
     try {
       const windowContext = window as unknown as CustomWindow;
-      const AudioContextClass =
-        windowContext.AudioContext || windowContext.webkitAudioContext;
-      if (!AudioContextClass) {
-        return;
-      }
+      const AudioContextClass = windowContext.AudioContext || windowContext.webkitAudioContext;
+      if (!AudioContextClass) return;
       if (!audioContextRef.current) {
         audioContextRef.current = new AudioContextClass();
       }
-      const audioContext = audioContextRef.current;
-      if (audioContext.state === "suspended") {
-        audioContext.resume();
+      const ctx = audioContextRef.current;
+      if (ctx.state === "suspended") {
+        ctx.resume();
       }
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
 
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      const now = ctx.currentTime;
 
       if (type === "click") {
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.04, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(
-          0.001,
-          audioContext.currentTime + 0.05,
-        );
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.05);
-      } else if (type === "beep") {
-        oscillator.type = "square";
-        oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(
-          0.001,
-          audioContext.currentTime + 0.12,
-        );
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.12);
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(200, now + 0.05);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+        osc.start(now);
+        osc.stop(now + 0.05);
       } else if (type === "success") {
-        oscillator.type = "triangle";
-        oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(
-          1300,
-          audioContext.currentTime + 0.18,
-        );
-        gainNode.gain.setValueAtTime(0.04, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(
-          0.001,
-          audioContext.currentTime + 0.22,
-        );
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.22);
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.setValueAtTime(880, now + 0.08);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
       } else if (type === "error") {
-        oscillator.type = "sawtooth";
-        oscillator.frequency.setValueAtTime(160, audioContext.currentTime);
-        oscillator.frequency.linearRampToValueAtTime(
-          90,
-          audioContext.currentTime + 0.35,
-        );
-        gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(
-          0.001,
-          audioContext.currentTime + 0.35,
-        );
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.35);
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.setValueAtTime(100, now + 0.08);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      } else if (type === "beep") {
+        osc.type = "square";
+        osc.frequency.setValueAtTime(1200, now);
+        gain.gain.setValueAtTime(0.02, now);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.03);
+        osc.start(now);
+        osc.stop(now + 0.03);
       }
-    } catch (error) {
-      void error;
+    } catch {
     }
   };
 
-  const handleCommand = (rawCommand: string) => {
-    const trimmed = rawCommand.trim();
-    if (!trimmed) {
-      return;
-    }
+  const handleCommandSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = cliInput.trim();
+    if (!trimmed) return;
+
+    const [cmd, ...args] = trimmed.split(" ");
+    const primaryCommand = cmd.toLowerCase();
+    const argument = args.join(" ").toLowerCase();
 
     setTerminalHistory((prev) => [...prev, `GUEST@CHAOS_PORTO:~$ ${trimmed}`]);
-    const lowerCommand = trimmed.toLowerCase();
-    const parts = lowerCommand.split(" ");
-    const primaryCommand = parts[0];
-    const argument = parts.slice(1).join(" ");
 
     if (primaryCommand === "help") {
-      playSynthSound("success");
+      playSynthSound("click");
       setTerminalHistory((prev) => [
         ...prev,
         "AVAILABLE SYSTEM COMMANDS:",
         "  help              - DISPLAY COMMAND INVENTORY DIRECTORY",
         "  list              - RETRIEVE ALL INDEXED VAULT MODULES",
         "  info [id/number]  - DUMP DECRYPTED SPEC LOGS OF A VAULT MODULE",
-        "  open [id/number]  - LOAD INTERACTIVE GRAPHICAL USER INTERFACE",
+        "  open [id/number]  - OPEN DEDICATED VAULT SPEC PAGE FOR A MODULE",
         "  view [grid|list]  - OVERRIDE MAIN GRAPHICAL INTERFACE REPRESENTATION",
         "  clear             - WIPE CURRENT VOLATILE TERMINAL LOG BUFFER",
       ]);
@@ -247,7 +204,7 @@ export default function ProjectsPageClient() {
       playSynthSound("success");
       const listLines = projects.map(
         (project) =>
-          `  [ID: ${project.id}] ${project.title} (${project.year}) - CATEGORY: ${project.category}`,
+          `  [ID: ${project.id}] ${project.title} (${project.year}) - CATEGORY: ${project.category} -> /projects/${project.slug}`,
       );
       setTerminalHistory((prev) => [
         ...prev,
@@ -263,7 +220,7 @@ export default function ProjectsPageClient() {
         setViewMode(argument as "grid" | "list");
         setTerminalHistory((prev) => [
           ...prev,
-          `INTERFACE OVERRIDE SUCCESSFUL: ${argument.toUpperCase()}`,
+          `VIEW MATRIX SWITCHED TO: ${argument.toUpperCase()}`,
         ]);
       } else {
         playSynthSound("error");
@@ -277,27 +234,30 @@ export default function ProjectsPageClient() {
         (p) =>
           p.id === parseInt(argument) ||
           p.number === argument ||
+          p.slug === argument ||
           p.title.toLowerCase() === argument,
       );
       if (match) {
         playSynthSound("success");
         if (primaryCommand === "open") {
-          setSelectedProject(match);
           setTerminalHistory((prev) => [
             ...prev,
-            `EXECUTING INTERACTIVE GRAPHICAL UI LOADER FOR: ${match.title}...`,
+            `NAVIGATING TO DEDICATED VAULT MODULE: ${match.title} (/projects/${match.slug})...`,
           ]);
+          router.push(`/projects/${match.slug}`);
         } else {
           setTerminalHistory((prev) => [
             ...prev,
             `DECRYPTED ARCHIVE DATA SPECS [${match.title}]:`,
             `  HEX_KEY: 0x00F${match.id}EC7B`,
+            `  SLUG: ${match.slug}`,
             `  CATEGORY: ${match.category}`,
             `  COMPILER_YEAR: ${match.year}`,
             `  TECH_COMPONENTS: ${match.tech.join(", ")}`,
             `  DEMO_HOST: ${match.links.demo || "NOT_HOSTED"}`,
             `  REPOSITORY: ${match.links.github || "ENCRYPTED"}`,
             `  OPERATIONAL_STATUS: SECURED`,
+            `  COMMAND: run 'open ${match.id}' to launch detail page.`,
           ]);
         }
       } else {
@@ -457,10 +417,7 @@ export default function ProjectsPageClient() {
             <div ref={terminalEndRef} />
           </div>
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleCommand(cliInput);
-            }}
+            onSubmit={handleCommandSubmit}
             className="flex items-center gap-2 bg-black/80 border border-dirty-white/10 p-2"
           >
             <Terminal size={14} className="text-acid-green animate-pulse" />
@@ -496,7 +453,7 @@ export default function ProjectsPageClient() {
 
             <div>
               <h3 className="font-mono text-xs font-bold text-dirty-white/60 mb-2.5">
-                // SEARCH
+                {"// SEARCH"}
               </h3>
               <div className="relative flex items-center bg-black/50 border border-dirty-white/20 p-2">
                 <Search size={14} className="text-dirty-white/30 mr-2" />
@@ -514,7 +471,7 @@ export default function ProjectsPageClient() {
 
             <div>
               <h3 className="font-mono text-xs font-bold text-dirty-white/60 mb-2.5">
-                // COMPILER_SEGMENT
+                {"// COMPILER_SEGMENT"}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {allCategories.map((cat) => (
@@ -534,7 +491,7 @@ export default function ProjectsPageClient() {
 
             <div>
               <h3 className="font-mono text-xs font-bold text-dirty-white/60 mb-2.5">
-                // TECH_COMPONENTS
+                {"// TECH_COMPONENTS"}
               </h3>
               <div className="flex flex-wrap gap-1.5 max-h-44 overflow-y-auto pr-1">
                 {allTechStacks.map((tech) => (
@@ -554,7 +511,7 @@ export default function ProjectsPageClient() {
 
             <div>
               <h3 className="font-mono text-xs font-bold text-dirty-white/60 mb-2.5">
-                // TIMELINE_RECORD
+                {"// TIMELINE_RECORD"}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {allYears.map((year) => (
@@ -589,7 +546,7 @@ export default function ProjectsPageClient() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-dirty-white/10 pb-4 gap-4">
               <div className="flex items-center gap-3">
                 <span className="font-mono text-xs text-dirty-white/40">
-                  {t.totalFound}:
+                  {t.totalResults}:
                 </span>
                 <span className="bg-dirty-white/10 border border-dirty-white/20 font-mono text-xs px-2 py-0.5 text-acid-green font-bold">
                   {filteredProjects.length.toString().padStart(2, "0")} /{" "}
@@ -642,10 +599,10 @@ export default function ProjectsPageClient() {
                       exit={{ opacity: 0, scale: 0.9 }}
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
-                      className="border-2 border-dirty-white/10 hover:border-dirty-white relative bg-void-black/80 aspect-square p-6 flex flex-col justify-between overflow-hidden group cursor-pointer shadow-[3px_3px_0_rgba(255,255,255,0.02)]"
+                      className="border-2 border-dirty-white/10 hover:border-acid-green relative bg-void-black/80 aspect-square p-6 flex flex-col justify-between overflow-hidden group cursor-pointer shadow-[3px_3px_0_rgba(255,255,255,0.02)] hover:shadow-[6px_6px_0_var(--color-acid-green)]"
                       onClick={() => {
                         playSynthSound("click");
-                        setSelectedProject(project);
+                        router.push(`/projects/${project.slug}`);
                       }}
                     >
                       <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-linear-to-tr from-hot-pink/5 via-transparent to-electric-blue/5"></div>
@@ -681,8 +638,8 @@ export default function ProjectsPageClient() {
                       </span>
 
                       <div className="relative z-10 flex justify-between items-start">
-                        <span className="font-mono text-[9px] bg-dirty-white/10 text-dirty-white/60 px-2 py-0.5 border border-dirty-white/10">
-                          ID_SYS: #0{project.id}
+                        <span className="font-mono text-[9px] bg-dirty-white/10 text-dirty-white/60 px-2 py-0.5 border border-dirty-white/10 group-hover:border-acid-green/40 group-hover:text-acid-green transition-colors">
+                          ID_SYS: #{project.number}
                         </span>
                         <span className="font-mono text-[9px] text-hot-pink">
                           {project.category}
@@ -699,20 +656,25 @@ export default function ProjectsPageClient() {
                         </div>
                       </div>
 
-                      <div className="relative z-10 border-t border-dirty-white/10 pt-4 flex flex-wrap gap-1.5">
-                        {project.tech.slice(0, 3).map((item) => (
-                          <span
-                            key={item}
-                            className="bg-black/40 border border-dirty-white/20 text-dirty-white/60 px-1.5 py-0.5 text-[8px] font-mono"
-                          >
-                            {item}
-                          </span>
-                        ))}
-                        {project.tech.length > 3 && (
-                          <span className="text-[8px] font-mono text-dirty-white/30 self-center">
-                            +{project.tech.length - 3}
-                          </span>
-                        )}
+                      <div className="relative z-10 border-t border-dirty-white/10 pt-4 flex items-center justify-between">
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.tech.slice(0, 3).map((item) => (
+                            <span
+                              key={item}
+                              className="bg-black/40 border border-dirty-white/20 text-dirty-white/60 px-1.5 py-0.5 text-[8px] font-mono"
+                            >
+                              {item}
+                            </span>
+                          ))}
+                          {project.tech.length > 3 && (
+                            <span className="text-[8px] font-mono text-dirty-white/30 self-center">
+                              +{project.tech.length - 3}
+                            </span>
+                          )}
+                        </div>
+                        <span className="font-mono text-[9px] text-acid-green opacity-0 group-hover:opacity-100 transition-opacity">
+                          [ OPEN ❯ ]
+                        </span>
                       </div>
                     </motion.div>
                   ))}
@@ -729,22 +691,22 @@ export default function ProjectsPageClient() {
                     <thead>
                       <tr className="bg-dirty-white/5 border-b border-dirty-white/10 text-dirty-white/40">
                         <th className="p-4 font-bold tracking-widest text-[10px]">
-                          // ID
+                          {"// ID"}
                         </th>
                         <th className="p-4 font-bold tracking-widest text-[10px]">
-                          // FILE_NAME
+                          {"// FILE_NAME"}
                         </th>
                         <th className="p-4 font-bold tracking-widest text-[10px]">
-                          // COMPILER
+                          {"// COMPILER"}
                         </th>
                         <th className="p-4 font-bold tracking-widest text-[10px]">
-                          // YEAR
+                          {"// YEAR"}
                         </th>
                         <th className="p-4 font-bold tracking-widest text-[10px]">
-                          // COMPONENTS_STACK
+                          {"// COMPONENTS_STACK"}
                         </th>
                         <th className="p-4 font-bold tracking-widest text-[10px]">
-                          // STATUS
+                          {"// STATUS"}
                         </th>
                       </tr>
                     </thead>
@@ -754,7 +716,7 @@ export default function ProjectsPageClient() {
                           key={project.id}
                           onClick={() => {
                             playSynthSound("click");
-                            setSelectedProject(project);
+                            router.push(`/projects/${project.slug}`);
                           }}
                           className="border-b border-dirty-white/5 hover:bg-white/5 cursor-pointer transition-colors group"
                         >
@@ -798,160 +760,6 @@ export default function ProjectsPageClient() {
           </div>
         </div>
       </main>
-
-      <Modal
-        isOpen={selectedProject !== null}
-        onClose={() => {
-          playSynthSound("click");
-          setSelectedProject(null);
-        }}
-        showCloseButton={false}
-        noiseOpacity="opacity-15"
-        containerClassName="relative w-full max-w-4xl bg-void-black border-2 border-dirty-white shadow-[10px_10px_0px_var(--color-acid-green)] overflow-hidden flex flex-col md:flex-row max-h-[90vh] !p-0"
-      >
-        {selectedProject && (
-          <>
-            <div className="absolute top-6 right-20 z-50">
-              <Button
-                variant="retro"
-                onClick={() => {
-                  playSynthSound("success");
-                  setLanguage((prev) => (prev === "en" ? "id" : "en"));
-                }}
-                className="text-[9px] px-2.5 py-1.5 bg-void-black/50 backdrop-blur-sm"
-              >
-                [ {t.languagesToggle}: {language.toUpperCase()} ]
-              </Button>
-            </div>
-
-            <Tape className="-top-4 right-10 rotate-3" />
-
-            <div
-              className={`w-full md:w-1/3 ${selectedProject.theme} p-8 flex flex-col justify-between relative overflow-hidden`}
-            >
-              <div className="noise-overlay absolute! opacity-20 mix-blend-multiply"></div>
-
-              <span className="font-glitch text-8xl text-void-black opacity-30 absolute -top-4 -left-4 select-none">
-                {selectedProject.number}
-              </span>
-
-              <div className="relative z-10 mt-10">
-                <h3 className="font-black text-3xl uppercase text-void-black leading-none mb-3 tracking-tighter">
-                  {selectedProject.title.split("_")[0]}
-                  <br />
-                  {selectedProject.title.split("_")[1] || ""}
-                </h3>
-                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] bg-void-black text-dirty-white px-2 py-1">
-                  <Clock size={10} className="text-acid-green" />
-                  <span>
-                    {t.yearLabel}: {selectedProject.year}
-                  </span>
-                </div>
-              </div>
-
-              <div className="relative z-10 mt-auto pt-8 border-t border-void-black/10">
-                <div className="w-8 h-1 bg-void-black mb-3"></div>
-                <p className="font-mono text-[10px] text-void-black font-bold tracking-widest uppercase">
-                  TYPE: {selectedProject.category}
-                </p>
-              </div>
-            </div>
-
-            <div className="w-full md:w-2/3 p-8 md:p-12 flex flex-col bg-void-black text-dirty-white relative overflow-y-auto max-h-[70vh] md:max-h-none">
-              <h4 className="text-lg font-bold text-acid-green mb-4 flex items-center gap-2 font-mono tracking-wider">
-                <Activity
-                  size={16}
-                  className="text-acid-green animate-pulse"
-                />
-                <span>_ {t.drawerTitle}</span>
-              </h4>
-
-              <div className="grid grid-cols-2 gap-4 mb-6 border border-dirty-white/10 p-3 bg-black/40 font-mono text-[10px]">
-                <div>
-                  <span className="text-dirty-white/40 block mb-0.5">
-                    // {t.uuidLabel}
-                  </span>
-                  <span className="text-electric-blue font-bold">
-                    0x00F{selectedProject.id}82BA
-                  </span>
-                </div>
-                <div>
-                  <span className="text-dirty-white/40 block mb-0.5">
-                    // {t.statusLabel}
-                  </span>
-                  <span className="text-acid-green font-bold flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 bg-acid-green rounded-full animate-ping"></span>
-                    {t.operational.toUpperCase()}
-                  </span>
-                </div>
-              </div>
-
-              <p className="font-sans text-base md:text-lg leading-relaxed mb-8 text-dirty-white/80">
-                {language === "en"
-                  ? selectedProject.description_en
-                  : selectedProject.description_id}
-              </p>
-
-              <div className="mb-8">
-                <h4 className="text-xs font-bold text-hot-pink mb-3 font-mono tracking-wider">
-                  {`// ${t.techStackHeader}`}
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedProject.tech.map((tech) => (
-                    <span
-                      key={tech}
-                      className="border border-dirty-white/20 bg-white/5 px-2.5 py-1 text-xs font-mono text-dirty-white/70 hover:bg-dirty-white hover:text-void-black hover:border-dirty-white transition-all cursor-crosshair"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-auto grid grid-cols-2 gap-4 pt-4 border-t border-dirty-white/10">
-                <Button
-                  disabled={!selectedProject.links.demo}
-                  onClick={() => {
-                    playSynthSound("success");
-                    if (selectedProject.links.demo) {
-                      window.open(selectedProject.links.demo);
-                    }
-                  }}
-                  variant="glitch"
-                  className="py-3 text-xs tracking-widest flex items-center justify-center gap-2"
-                >
-                  <Globe size={14} />
-                  {t.demoBtn}
-                </Button>
-                <Button
-                  disabled={!selectedProject.links.github}
-                  onClick={() => {
-                    playSynthSound("success");
-                    if (selectedProject.links.github) {
-                      window.open(selectedProject.links.github);
-                    }
-                  }}
-                  variant="brutalist"
-                  className="py-3 text-xs flex items-center justify-center gap-2"
-                >
-                  <Github size={14} />
-                  {t.githubBtn}
-                </Button>
-              </div>
-
-              <button
-                onClick={() => {
-                  playSynthSound("click");
-                  setSelectedProject(null);
-                }}
-                className="absolute top-4 right-4 text-dirty-white/60 hover:text-hot-pink transition-colors p-2 cursor-pointer"
-              >
-                <X size={20} />
-              </button>
-            </div>
-          </>
-        )}
-      </Modal>
 
       <Footer />
     </div>

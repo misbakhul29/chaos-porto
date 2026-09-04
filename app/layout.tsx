@@ -1,8 +1,14 @@
 import { Geist, Geist_Mono, Permanent_Marker, Rubik_Glitch, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { GravityStarsBackground } from "@/components/animate-ui/components/backgrounds/gravity-stars";
 import { data } from "@/lib/metadata";
 import { Metadata } from "next";
+import Schema from "@/components/Schema";
+import SpaceshipCursor from "@/components/SpaceshipCursor";
+import { LanguageProvider } from "@/lib/context/LanguageContext";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import ConstellationBackground from "@/components/background/ConstellationBackground";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,13 +36,6 @@ const spaceGrostek = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
 })
-
-import Schema from "./components/Schema";
-import SpaceshipCursor from "./components/SpaceshipCursor";
-import { LanguageProvider } from "@/app/context/LanguageContext";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import ConstellationBackground from "./components/background/ConstellationBackground";
 
 export const metadata: Metadata = data;
 

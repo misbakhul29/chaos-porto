@@ -1,44 +1,51 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 
 const PARTICLE_COUNT = 150;
 
+function createInitialParticles() {
+  const positions: number[] = [];
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    positions.push(
+      (Math.random() - 0.5) * 30,
+      (Math.random() - 0.5) * 20,
+      (Math.random() - 0.5) * 10
+    );
+  }
+  return new Float32Array(positions);
+}
+
+function createInitialVelocities() {
+  return Array.from({ length: PARTICLE_COUNT }, () => ({
+    x: (Math.random() - 0.5) * 0.002,
+    y: (Math.random() - 0.5) * 0.002,
+  }));
+}
+
 export default function Constellation() {
   const pointsRef = useRef<THREE.Points>(null);
+  const [particles] = useState(createInitialParticles);
+  const velocitiesRef = useRef<{ x: number; y: number }[]>([]);
 
-  const particles = useMemo(() => {
-    const positions = [];
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      positions.push(
-        (Math.random() - 0.5) * 30,
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 10
-      );
-    }
-    return new Float32Array(positions);
-  }, []);
-
-  const velocities = useMemo(() => {
-    return Array.from({ length: PARTICLE_COUNT }, () => ({
-      x: (Math.random() - 0.5) * 0.002,
-      y: (Math.random() - 0.5) * 0.002,
-    }));
+  useEffect(() => {
+    velocitiesRef.current = createInitialVelocities();
   }, []);
 
   useFrame(() => {
-    if (!pointsRef.current) return;
+    if (!pointsRef.current || velocitiesRef.current.length === 0) return;
     const pos = pointsRef.current.geometry.attributes.position as THREE.BufferAttribute;
+    const vels = velocitiesRef.current;
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
-      pos.array[i * 3] += velocities[i].x;
-      pos.array[i * 3 + 1] += velocities[i].y;
+      pos.array[i * 3] += vels[i].x;
+      pos.array[i * 3 + 1] += vels[i].y;
 
       // Bounce off boundaries to keep particles within view
-      if (pos.array[i * 3] > 15 || pos.array[i * 3] < -15) velocities[i].x *= -1;
-      if (pos.array[i * 3 + 1] > 10 || pos.array[i * 3 + 1] < -10) velocities[i].y *= -1;
+      if (pos.array[i * 3] > 15 || pos.array[i * 3] < -15) vels[i].x *= -1;
+      if (pos.array[i * 3 + 1] > 10 || pos.array[i * 3 + 1] < -10) vels[i].y *= -1;
     }
     pos.needsUpdate = true;
   });
@@ -102,12 +109,14 @@ function Connections({
 
   // Pre-allocate memory for lines to prevent garbage collection spikes
   const maxLines = (PARTICLE_COUNT * (PARTICLE_COUNT - 1)) / 2;
-  const linePositions = useMemo(() => new Float32Array(maxLines * 6), [maxLines]);
+  const [linePositions] = useState(() => new Float32Array(maxLines * 6));
+  const linePositionsRef = useRef(linePositions);
 
   useFrame(() => {
     if (!pointsRef.current || !lineRef.current) return;
 
     const pos = pointsRef.current.geometry.attributes.position.array as Float32Array;
+    const positions = linePositionsRef.current;
     let vertexCount = 0;
 
     for (let i = 0; i < pos.length; i += 3) {
@@ -119,13 +128,13 @@ function Connections({
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
         if (dist < 2.5) {
-          linePositions[vertexCount++] = pos[i];
-          linePositions[vertexCount++] = pos[i + 1];
-          linePositions[vertexCount++] = pos[i + 2];
+          positions[vertexCount++] = pos[i];
+          positions[vertexCount++] = pos[i + 1];
+          positions[vertexCount++] = pos[i + 2];
 
-          linePositions[vertexCount++] = pos[j];
-          linePositions[vertexCount++] = pos[j + 1];
-          linePositions[vertexCount++] = pos[j + 2];
+          positions[vertexCount++] = pos[j];
+          positions[vertexCount++] = pos[j + 1];
+          positions[vertexCount++] = pos[j + 2];
         }
       }
     }

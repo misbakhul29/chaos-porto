@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Marquee from "./Marquee";
-import Tape from "@/app/components/ui/Tape";
-import Button from "@/app/components/ui/Button";
-import Modal from "@/app/components/ui/Modal";
-import { useLanguage } from "@/app/context/LanguageContext";
+import Tape from "@/components/ui/Tape";
+import Button from "@/components/ui/Button";
+import Modal from "@/components/ui/Modal";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 const FLOW_DATA = [
     {
